@@ -22,15 +22,15 @@
         <div class="d-flex justify-content-center align-items-center panel">Dungeon Master</div>
       </Col>
     </Row>
-    <Modal isOpen={startModal} {toggleModal}>
-      <ModalHeader {toggleModal}>
+    <Modal isOpen={startModal} {toggleModal()}>
+      <ModalHeader {toggleModal()}>
         Funny Modal
       </ModalHeader>
       <ModalBody>
        We game sometimes.
       </ModalBody>
       <ModalFooter>
-        <Button color="secondary" on:click={toggleModal}>
+        <Button color="secondary" on:click={toggleModal()}>
           Close
         </Button>
       </ModalFooter>
