@@ -45,7 +45,7 @@ function create_default_slot_8(ctx) {
 	};
 }
 
-// (16:6) <Col class="">
+// (18:6) <Col class="">
 function create_default_slot_7(ctx) {
 	let div;
 
@@ -64,7 +64,7 @@ function create_default_slot_7(ctx) {
 	};
 }
 
-// (12:4) <Row class="align-items-center" style="height: 100vh;">
+// (14:4) <Row class="align-items-center" style="height: 100vh;">
 function create_default_slot_6(ctx) {
 	let col0;
 	let t;
@@ -134,7 +134,7 @@ function create_default_slot_6(ctx) {
 	};
 }
 
-// (21:6) <ModalHeader {toggle}>
+// (23:6) <ModalHeader {toggleModal}>
 function create_default_slot_5(ctx) {
 	let t;
 
@@ -151,7 +151,7 @@ function create_default_slot_5(ctx) {
 	};
 }
 
-// (24:6) <ModalBody>
+// (26:6) <ModalBody>
 function create_default_slot_4(ctx) {
 	let t;
 
@@ -168,7 +168,7 @@ function create_default_slot_4(ctx) {
 	};
 }
 
-// (28:8) <Button color="secondary" on:click={toggle}>
+// (30:8) <Button color="secondary" on:click={toggleModal}>
 function create_default_slot_3(ctx) {
 	let t;
 
@@ -185,7 +185,7 @@ function create_default_slot_3(ctx) {
 	};
 }
 
-// (27:6) <ModalFooter>
+// (29:6) <ModalFooter>
 function create_default_slot_2(ctx) {
 	let button;
 	let current;
@@ -198,7 +198,7 @@ function create_default_slot_2(ctx) {
 			}
 		});
 
-	button.$on("click", toggle);
+	button.$on("click", /*toggleModal*/ ctx[1]);
 
 	return {
 		c() {
@@ -232,7 +232,7 @@ function create_default_slot_2(ctx) {
 	};
 }
 
-// (20:4) <Modal isOpen={startModal} {toggle}>
+// (22:4) <Modal isOpen={startModal} {toggleModal}>
 function create_default_slot_1(ctx) {
 	let modalheader;
 	let t0;
@@ -243,7 +243,7 @@ function create_default_slot_1(ctx) {
 
 	modalheader = new ModalHeader({
 			props: {
-				toggle,
+				toggleModal: /*toggleModal*/ ctx[1],
 				$$slots: { default: [create_default_slot_5] },
 				$$scope: { ctx }
 			}
@@ -325,7 +325,7 @@ function create_default_slot_1(ctx) {
 	};
 }
 
-// (11:2) <Container class="g-0 container-fluid">
+// (13:2) <Container class="g-0 container-fluid">
 function create_default_slot(ctx) {
 	let row;
 	let t;
@@ -344,7 +344,7 @@ function create_default_slot(ctx) {
 	modal = new Modal({
 			props: {
 				isOpen: /*startModal*/ ctx[0],
-				toggle,
+				toggleModal: /*toggleModal*/ ctx[1],
 				$$slots: { default: [create_default_slot_1] },
 				$$scope: { ctx }
 			}
@@ -450,8 +450,12 @@ function create_fragment(ctx) {
 function instance($$self, $$props, $$invalidate) {
 	let startModal = false;
 	const toggleModal = () => $$invalidate(0, startModal = !startModal);
-	window.onload = toggleModal;
-	return [startModal];
+
+	window.onload = function AppLoad() {
+		toggleModal;
+	};
+
+	return [startModal, toggleModal];
 }
 
 class App extends SvelteComponent {
