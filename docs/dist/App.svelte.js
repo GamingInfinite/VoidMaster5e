@@ -8,7 +8,9 @@ import {
 	element,
 	init,
 	insert,
+	listen,
 	mount_component,
+	noop,
 	safe_not_equal,
 	space,
 	text,
@@ -29,6 +31,8 @@ import {
 
 function create_default_slot_8(ctx) {
 	let div;
+	let mounted;
+	let dispose;
 
 	return {
 		c() {
@@ -38,9 +42,17 @@ function create_default_slot_8(ctx) {
 		},
 		m(target, anchor) {
 			insert(target, div, anchor);
+
+			if (!mounted) {
+				dispose = listen(div, "click", /*toggleModal*/ ctx[1]);
+				mounted = true;
+			}
 		},
+		p: noop,
 		d(detaching) {
 			if (detaching) detach(div);
+			mounted = false;
+			dispose();
 		}
 	};
 }
