@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap');
+
 body {
-  font-family: sans-serif;
+  font-family: 'Roboto Condensed', sans-serif;
   background-color: #243447;
   color: maroon;
 }
@@ -34,6 +36,12 @@ body {
 
 .panel:hover {
   border-radius: 200px;
+}
+
+.panel-text {
+  padding-left: 40px;
+  font-size: 40px;
+  font-family: 'Roboto Condensed', sans-serif;
 }
 
 .container-fluid {

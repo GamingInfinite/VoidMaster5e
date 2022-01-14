@@ -33,7 +33,10 @@ function create_default_slot_8(ctx) {
 	return {
 		c() {
 			div = element("div");
-			div.textContent = "Player";
+
+			div.innerHTML = `<img src="https://raw.githubusercontent.com/GamingInfinite/VoidMaster5e/main/public/player.png" alt="player"/> 
+            <p class="panel-text">Player</p>`;
+
 			attr(div, "class", "d-flex justify-content-center align-items-center panel");
 		},
 		m(target, anchor) {
@@ -45,7 +48,7 @@ function create_default_slot_8(ctx) {
 	};
 }
 
-// (32:6) <Col class="">
+// (38:6) <Col class="">
 function create_default_slot_7(ctx) {
 	let div;
 
@@ -134,7 +137,7 @@ function create_default_slot_6(ctx) {
 	};
 }
 
-// (39:6) <ModalHeader {toggleModal}>
+// (45:6) <ModalHeader {toggleModal}>
 function create_default_slot_5(ctx) {
 	let t;
 
@@ -151,7 +154,7 @@ function create_default_slot_5(ctx) {
 	};
 }
 
-// (40:6) <ModalBody>
+// (46:6) <ModalBody>
 function create_default_slot_4(ctx) {
 	let p0;
 	let t0;
@@ -180,7 +183,7 @@ function create_default_slot_4(ctx) {
 	};
 }
 
-// (55:8) <Button color="secondary" on:click={toggleModal}>
+// (61:8) <Button color="secondary" on:click={toggleModal}>
 function create_default_slot_3(ctx) {
 	let t;
 
@@ -197,7 +200,7 @@ function create_default_slot_3(ctx) {
 	};
 }
 
-// (54:6) <ModalFooter>
+// (60:6) <ModalFooter>
 function create_default_slot_2(ctx) {
 	let button;
 	let current;
@@ -244,7 +247,7 @@ function create_default_slot_2(ctx) {
 	};
 }
 
-// (38:4) <Modal isOpen={startModal} {toggleModal}>
+// (44:4) <Modal isOpen={startModal} {toggleModal}>
 function create_default_slot_1(ctx) {
 	let modalheader;
 	let t0;
