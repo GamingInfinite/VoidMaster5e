@@ -4,6 +4,22 @@ body {
   color: maroon;
 }
 
+.modal-content {
+  background-color: #243447;
+}
+
+.modal-header {
+  border-style: none;
+}
+
+.modal-footer {
+  border-style: none;
+}
+
+.modal-logo {
+  text-align: center;
+}
+
 .panel {
   height: 80vh;
   border-style: hidden solid hidden hidden;
@@ -12,6 +28,7 @@ body {
   border-color: maroon;
   margin-left: 20px;
   margin-right: 20px;
+  padding: 0px;
   transition: 0.5s;
 }
 
