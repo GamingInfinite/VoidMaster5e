@@ -8,9 +8,7 @@ import {
 	element,
 	init,
 	insert,
-	listen,
 	mount_component,
-	noop,
 	safe_not_equal,
 	space,
 	text,
@@ -29,10 +27,8 @@ import {
 	Button
 } from "../snowpack/pkg/sveltestrap.js";
 
-function create_default_slot_11(ctx) {
+function create_default_slot_8(ctx) {
 	let div;
-	let mounted;
-	let dispose;
 
 	return {
 		c() {
@@ -42,23 +38,15 @@ function create_default_slot_11(ctx) {
 		},
 		m(target, anchor) {
 			insert(target, div, anchor);
-
-			if (!mounted) {
-				dispose = listen(div, "click", /*toggleModal*/ ctx[1]);
-				mounted = true;
-			}
 		},
-		p: noop,
 		d(detaching) {
 			if (detaching) detach(div);
-			mounted = false;
-			dispose();
 		}
 	};
 }
 
-// (18:6) <Col class="">
-function create_default_slot_10(ctx) {
+// (21:6) <Col class="">
+function create_default_slot_7(ctx) {
 	let div;
 
 	return {
@@ -76,8 +64,8 @@ function create_default_slot_10(ctx) {
 	};
 }
 
-// (14:4) <Row class="align-items-center" style="height: 100vh;">
-function create_default_slot_9(ctx) {
+// (17:4) <Row class="align-items-center" style="height: 100vh;">
+function create_default_slot_6(ctx) {
 	let col0;
 	let t;
 	let col1;
@@ -86,7 +74,7 @@ function create_default_slot_9(ctx) {
 	col0 = new Col({
 			props: {
 				class: "",
-				$$slots: { default: [create_default_slot_11] },
+				$$slots: { default: [create_default_slot_8] },
 				$$scope: { ctx }
 			}
 		});
@@ -94,7 +82,7 @@ function create_default_slot_9(ctx) {
 	col1 = new Col({
 			props: {
 				class: "",
-				$$slots: { default: [create_default_slot_10] },
+				$$slots: { default: [create_default_slot_7] },
 				$$scope: { ctx }
 			}
 		});
@@ -146,25 +134,8 @@ function create_default_slot_9(ctx) {
 	};
 }
 
-// (24:8) <Button color="primary" on:click={toggleModal}>
-function create_default_slot_8(ctx) {
-	let t;
-
-	return {
-		c() {
-			t = text("Test");
-		},
-		m(target, anchor) {
-			insert(target, t, anchor);
-		},
-		d(detaching) {
-			if (detaching) detach(t);
-		}
-	};
-}
-
-// (26:10) <ModalHeader {toggleModal}>
-function create_default_slot_7(ctx) {
+// (26:6) <ModalHeader {toggleModal}>
+function create_default_slot_5(ctx) {
 	let t;
 
 	return {
@@ -180,8 +151,8 @@ function create_default_slot_7(ctx) {
 	};
 }
 
-// (29:10) <ModalBody>
-function create_default_slot_6(ctx) {
+// (29:6) <ModalBody>
+function create_default_slot_4(ctx) {
 	let t;
 
 	return {
@@ -197,8 +168,8 @@ function create_default_slot_6(ctx) {
 	};
 }
 
-// (33:12) <Button color="secondary" on:click={toggleModal}>
-function create_default_slot_5(ctx) {
+// (33:8) <Button color="secondary" on:click={toggleModal}>
+function create_default_slot_3(ctx) {
 	let t;
 
 	return {
@@ -214,15 +185,15 @@ function create_default_slot_5(ctx) {
 	};
 }
 
-// (32:10) <ModalFooter>
-function create_default_slot_4(ctx) {
+// (32:6) <ModalFooter>
+function create_default_slot_2(ctx) {
 	let button;
 	let current;
 
 	button = new Button({
 			props: {
 				color: "secondary",
-				$$slots: { default: [create_default_slot_5] },
+				$$slots: { default: [create_default_slot_3] },
 				$$scope: { ctx }
 			}
 		});
@@ -261,8 +232,8 @@ function create_default_slot_4(ctx) {
 	};
 }
 
-// (25:8) <Modal isOpen={startModal} {toggleModal}>
-function create_default_slot_3(ctx) {
+// (25:4) <Modal isOpen={startModal} {toggleModal}>
+function create_default_slot_1(ctx) {
 	let modalheader;
 	let t0;
 	let modalbody;
@@ -273,21 +244,21 @@ function create_default_slot_3(ctx) {
 	modalheader = new ModalHeader({
 			props: {
 				toggleModal: /*toggleModal*/ ctx[1],
-				$$slots: { default: [create_default_slot_7] },
+				$$slots: { default: [create_default_slot_5] },
 				$$scope: { ctx }
 			}
 		});
 
 	modalbody = new ModalBody({
 			props: {
-				$$slots: { default: [create_default_slot_6] },
+				$$slots: { default: [create_default_slot_4] },
 				$$scope: { ctx }
 			}
 		});
 
 	modalfooter = new ModalFooter({
 			props: {
-				$$slots: { default: [create_default_slot_4] },
+				$$slots: { default: [create_default_slot_2] },
 				$$scope: { ctx }
 			}
 		});
@@ -354,52 +325,51 @@ function create_default_slot_3(ctx) {
 	};
 }
 
-// (23:6) <Col>
-function create_default_slot_2(ctx) {
-	let button;
+// (16:2) <Container class="g-0 container-fluid">
+function create_default_slot(ctx) {
+	let row;
 	let t;
 	let modal;
 	let current;
 
-	button = new Button({
+	row = new Row({
 			props: {
-				color: "primary",
-				$$slots: { default: [create_default_slot_8] },
+				class: "align-items-center",
+				style: "height: 100vh;",
+				$$slots: { default: [create_default_slot_6] },
 				$$scope: { ctx }
 			}
 		});
-
-	button.$on("click", /*toggleModal*/ ctx[1]);
 
 	modal = new Modal({
 			props: {
 				isOpen: /*startModal*/ ctx[0],
 				toggleModal: /*toggleModal*/ ctx[1],
-				$$slots: { default: [create_default_slot_3] },
+				$$slots: { default: [create_default_slot_1] },
 				$$scope: { ctx }
 			}
 		});
 
 	return {
 		c() {
-			create_component(button.$$.fragment);
+			create_component(row.$$.fragment);
 			t = space();
 			create_component(modal.$$.fragment);
 		},
 		m(target, anchor) {
-			mount_component(button, target, anchor);
+			mount_component(row, target, anchor);
 			insert(target, t, anchor);
 			mount_component(modal, target, anchor);
 			current = true;
 		},
 		p(ctx, dirty) {
-			const button_changes = {};
+			const row_changes = {};
 
 			if (dirty & /*$$scope*/ 4) {
-				button_changes.$$scope = { dirty, ctx };
+				row_changes.$$scope = { dirty, ctx };
 			}
 
-			button.$set(button_changes);
+			row.$set(row_changes);
 			const modal_changes = {};
 			if (dirty & /*startModal*/ 1) modal_changes.isOpen = /*startModal*/ ctx[0];
 
@@ -411,133 +381,19 @@ function create_default_slot_2(ctx) {
 		},
 		i(local) {
 			if (current) return;
-			transition_in(button.$$.fragment, local);
+			transition_in(row.$$.fragment, local);
 			transition_in(modal.$$.fragment, local);
 			current = true;
 		},
 		o(local) {
-			transition_out(button.$$.fragment, local);
+			transition_out(row.$$.fragment, local);
 			transition_out(modal.$$.fragment, local);
 			current = false;
 		},
 		d(detaching) {
-			destroy_component(button, detaching);
+			destroy_component(row, detaching);
 			if (detaching) detach(t);
 			destroy_component(modal, detaching);
-		}
-	};
-}
-
-// (22:4) <Row>
-function create_default_slot_1(ctx) {
-	let col;
-	let current;
-
-	col = new Col({
-			props: {
-				$$slots: { default: [create_default_slot_2] },
-				$$scope: { ctx }
-			}
-		});
-
-	return {
-		c() {
-			create_component(col.$$.fragment);
-		},
-		m(target, anchor) {
-			mount_component(col, target, anchor);
-			current = true;
-		},
-		p(ctx, dirty) {
-			const col_changes = {};
-
-			if (dirty & /*$$scope, startModal*/ 5) {
-				col_changes.$$scope = { dirty, ctx };
-			}
-
-			col.$set(col_changes);
-		},
-		i(local) {
-			if (current) return;
-			transition_in(col.$$.fragment, local);
-			current = true;
-		},
-		o(local) {
-			transition_out(col.$$.fragment, local);
-			current = false;
-		},
-		d(detaching) {
-			destroy_component(col, detaching);
-		}
-	};
-}
-
-// (13:2) <Container class="g-0 container-fluid">
-function create_default_slot(ctx) {
-	let row0;
-	let t;
-	let row1;
-	let current;
-
-	row0 = new Row({
-			props: {
-				class: "align-items-center",
-				style: "height: 100vh;",
-				$$slots: { default: [create_default_slot_9] },
-				$$scope: { ctx }
-			}
-		});
-
-	row1 = new Row({
-			props: {
-				$$slots: { default: [create_default_slot_1] },
-				$$scope: { ctx }
-			}
-		});
-
-	return {
-		c() {
-			create_component(row0.$$.fragment);
-			t = space();
-			create_component(row1.$$.fragment);
-		},
-		m(target, anchor) {
-			mount_component(row0, target, anchor);
-			insert(target, t, anchor);
-			mount_component(row1, target, anchor);
-			current = true;
-		},
-		p(ctx, dirty) {
-			const row0_changes = {};
-
-			if (dirty & /*$$scope*/ 4) {
-				row0_changes.$$scope = { dirty, ctx };
-			}
-
-			row0.$set(row0_changes);
-			const row1_changes = {};
-
-			if (dirty & /*$$scope, startModal*/ 5) {
-				row1_changes.$$scope = { dirty, ctx };
-			}
-
-			row1.$set(row1_changes);
-		},
-		i(local) {
-			if (current) return;
-			transition_in(row0.$$.fragment, local);
-			transition_in(row1.$$.fragment, local);
-			current = true;
-		},
-		o(local) {
-			transition_out(row0.$$.fragment, local);
-			transition_out(row1.$$.fragment, local);
-			current = false;
-		},
-		d(detaching) {
-			destroy_component(row0, detaching);
-			if (detaching) detach(t);
-			destroy_component(row1, detaching);
 		}
 	};
 }
@@ -593,10 +449,13 @@ function create_fragment(ctx) {
 
 function instance($$self, $$props, $$invalidate) {
 	let startModal = false;
-	const toggleModal = () => $$invalidate(0, startModal = !startModal);
+
+	function toggleModal() {
+		$$invalidate(0, startModal = !startModal);
+	}
 
 	window.onload = function AppLoad() {
-		toggleModal;
+		toggleModal();
 	};
 
 	return [startModal, toggleModal];
