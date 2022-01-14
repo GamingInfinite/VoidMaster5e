@@ -1,0 +1,8 @@
+{
+    "Character": {
+        "name": "Astariel",
+        "classes": ["Barbarian", "Bard"],
+        "race": "Halfling",
+        "stats": [10, 10, 10, 10, 10, 10]
+    }
+}
