@@ -1,5 +1,10 @@
 <script>
-  import { Container, Row, Col } from "sveltestrap";
+  import { Container, Row, Col, Modal, ModalHeader, ModalBody, ModalFooter, Button } from "sveltestrap";
+
+  let startModal = false;
+  const toggleModal = () => (startModal = !startModal);
+
+  window.onload = toggleModal;
 </script>
 
 <div class="App">
@@ -12,5 +17,18 @@
         <div class="d-flex justify-content-center align-items-center panel">Dungeon Master</div>
       </Col>
     </Row>
+    <Modal isOpen={startModal} {toggle}>
+      <ModalHeader {toggle}>
+        Funny Modal
+      </ModalHeader>
+      <ModalBody>
+        We game sometimes.
+      </ModalBody>
+      <ModalFooter>
+        <Button color="secondary" on:click={toggle}>
+          Close
+        </Button>
+      </ModalFooter>
+    </Modal>
   </Container>
 </div>
