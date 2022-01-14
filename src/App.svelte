@@ -4,7 +4,9 @@
   let startModal = false;
   const toggleModal = () => (startModal = !startModal);
 
-  window.onload = toggleModal;
+  window.onload = function AppLoad() {
+    toggleModal
+  }
 </script>
 
 <div class="App">
@@ -17,15 +19,15 @@
         <div class="d-flex justify-content-center align-items-center panel">Dungeon Master</div>
       </Col>
     </Row>
-    <Modal isOpen={startModal} {toggle}>
-      <ModalHeader {toggle}>
+    <Modal isOpen={startModal} {toggleModal}>
+      <ModalHeader {toggleModal}>
         Funny Modal
       </ModalHeader>
       <ModalBody>
         We game sometimes.
       </ModalBody>
       <ModalFooter>
-        <Button color="secondary" on:click={toggle}>
+        <Button color="secondary" on:click={toggleModal}>
           Close
         </Button>
       </ModalFooter>
