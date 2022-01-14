@@ -11,13 +11,23 @@ import {
 	mount_component,
 	safe_not_equal,
 	space,
+	text,
 	transition_in,
 	transition_out
 } from "../snowpack/pkg/svelte/internal.js";
 
-import { Container, Row, Col } from "../snowpack/pkg/sveltestrap.js";
+import {
+	Container,
+	Row,
+	Col,
+	Modal,
+	ModalHeader,
+	ModalBody,
+	ModalFooter,
+	Button
+} from "../snowpack/pkg/sveltestrap.js";
 
-function create_default_slot_3(ctx) {
+function create_default_slot_8(ctx) {
 	let div;
 
 	return {
@@ -35,8 +45,8 @@ function create_default_slot_3(ctx) {
 	};
 }
 
-// (11:6) <Col class="">
-function create_default_slot_2(ctx) {
+// (16:6) <Col class="">
+function create_default_slot_7(ctx) {
 	let div;
 
 	return {
@@ -54,8 +64,8 @@ function create_default_slot_2(ctx) {
 	};
 }
 
-// (7:4) <Row class="align-items-center" style="height: 100vh;">
-function create_default_slot_1(ctx) {
+// (12:4) <Row class="align-items-center" style="height: 100vh;">
+function create_default_slot_6(ctx) {
 	let col0;
 	let t;
 	let col1;
@@ -64,7 +74,7 @@ function create_default_slot_1(ctx) {
 	col0 = new Col({
 			props: {
 				class: "",
-				$$slots: { default: [create_default_slot_3] },
+				$$slots: { default: [create_default_slot_8] },
 				$$scope: { ctx }
 			}
 		});
@@ -72,7 +82,7 @@ function create_default_slot_1(ctx) {
 	col1 = new Col({
 			props: {
 				class: "",
-				$$slots: { default: [create_default_slot_2] },
+				$$slots: { default: [create_default_slot_7] },
 				$$scope: { ctx }
 			}
 		});
@@ -92,14 +102,14 @@ function create_default_slot_1(ctx) {
 		p(ctx, dirty) {
 			const col0_changes = {};
 
-			if (dirty & /*$$scope*/ 1) {
+			if (dirty & /*$$scope*/ 4) {
 				col0_changes.$$scope = { dirty, ctx };
 			}
 
 			col0.$set(col0_changes);
 			const col1_changes = {};
 
-			if (dirty & /*$$scope*/ 1) {
+			if (dirty & /*$$scope*/ 4) {
 				col1_changes.$$scope = { dirty, ctx };
 			}
 
@@ -124,15 +134,217 @@ function create_default_slot_1(ctx) {
 	};
 }
 
-// (6:2) <Container class="g-0 container-fluid">
+// (21:6) <ModalHeader {toggle}>
+function create_default_slot_5(ctx) {
+	let t;
+
+	return {
+		c() {
+			t = text("Funny Modal");
+		},
+		m(target, anchor) {
+			insert(target, t, anchor);
+		},
+		d(detaching) {
+			if (detaching) detach(t);
+		}
+	};
+}
+
+// (24:6) <ModalBody>
+function create_default_slot_4(ctx) {
+	let t;
+
+	return {
+		c() {
+			t = text("We game sometimes.");
+		},
+		m(target, anchor) {
+			insert(target, t, anchor);
+		},
+		d(detaching) {
+			if (detaching) detach(t);
+		}
+	};
+}
+
+// (28:8) <Button color="secondary" on:click={toggle}>
+function create_default_slot_3(ctx) {
+	let t;
+
+	return {
+		c() {
+			t = text("Close");
+		},
+		m(target, anchor) {
+			insert(target, t, anchor);
+		},
+		d(detaching) {
+			if (detaching) detach(t);
+		}
+	};
+}
+
+// (27:6) <ModalFooter>
+function create_default_slot_2(ctx) {
+	let button;
+	let current;
+
+	button = new Button({
+			props: {
+				color: "secondary",
+				$$slots: { default: [create_default_slot_3] },
+				$$scope: { ctx }
+			}
+		});
+
+	button.$on("click", toggle);
+
+	return {
+		c() {
+			create_component(button.$$.fragment);
+		},
+		m(target, anchor) {
+			mount_component(button, target, anchor);
+			current = true;
+		},
+		p(ctx, dirty) {
+			const button_changes = {};
+
+			if (dirty & /*$$scope*/ 4) {
+				button_changes.$$scope = { dirty, ctx };
+			}
+
+			button.$set(button_changes);
+		},
+		i(local) {
+			if (current) return;
+			transition_in(button.$$.fragment, local);
+			current = true;
+		},
+		o(local) {
+			transition_out(button.$$.fragment, local);
+			current = false;
+		},
+		d(detaching) {
+			destroy_component(button, detaching);
+		}
+	};
+}
+
+// (20:4) <Modal isOpen={startModal} {toggle}>
+function create_default_slot_1(ctx) {
+	let modalheader;
+	let t0;
+	let modalbody;
+	let t1;
+	let modalfooter;
+	let current;
+
+	modalheader = new ModalHeader({
+			props: {
+				toggle,
+				$$slots: { default: [create_default_slot_5] },
+				$$scope: { ctx }
+			}
+		});
+
+	modalbody = new ModalBody({
+			props: {
+				$$slots: { default: [create_default_slot_4] },
+				$$scope: { ctx }
+			}
+		});
+
+	modalfooter = new ModalFooter({
+			props: {
+				$$slots: { default: [create_default_slot_2] },
+				$$scope: { ctx }
+			}
+		});
+
+	return {
+		c() {
+			create_component(modalheader.$$.fragment);
+			t0 = space();
+			create_component(modalbody.$$.fragment);
+			t1 = space();
+			create_component(modalfooter.$$.fragment);
+		},
+		m(target, anchor) {
+			mount_component(modalheader, target, anchor);
+			insert(target, t0, anchor);
+			mount_component(modalbody, target, anchor);
+			insert(target, t1, anchor);
+			mount_component(modalfooter, target, anchor);
+			current = true;
+		},
+		p(ctx, dirty) {
+			const modalheader_changes = {};
+
+			if (dirty & /*$$scope*/ 4) {
+				modalheader_changes.$$scope = { dirty, ctx };
+			}
+
+			modalheader.$set(modalheader_changes);
+			const modalbody_changes = {};
+
+			if (dirty & /*$$scope*/ 4) {
+				modalbody_changes.$$scope = { dirty, ctx };
+			}
+
+			modalbody.$set(modalbody_changes);
+			const modalfooter_changes = {};
+
+			if (dirty & /*$$scope*/ 4) {
+				modalfooter_changes.$$scope = { dirty, ctx };
+			}
+
+			modalfooter.$set(modalfooter_changes);
+		},
+		i(local) {
+			if (current) return;
+			transition_in(modalheader.$$.fragment, local);
+			transition_in(modalbody.$$.fragment, local);
+			transition_in(modalfooter.$$.fragment, local);
+			current = true;
+		},
+		o(local) {
+			transition_out(modalheader.$$.fragment, local);
+			transition_out(modalbody.$$.fragment, local);
+			transition_out(modalfooter.$$.fragment, local);
+			current = false;
+		},
+		d(detaching) {
+			destroy_component(modalheader, detaching);
+			if (detaching) detach(t0);
+			destroy_component(modalbody, detaching);
+			if (detaching) detach(t1);
+			destroy_component(modalfooter, detaching);
+		}
+	};
+}
+
+// (11:2) <Container class="g-0 container-fluid">
 function create_default_slot(ctx) {
 	let row;
+	let t;
+	let modal;
 	let current;
 
 	row = new Row({
 			props: {
 				class: "align-items-center",
 				style: "height: 100vh;",
+				$$slots: { default: [create_default_slot_6] },
+				$$scope: { ctx }
+			}
+		});
+
+	modal = new Modal({
+			props: {
+				isOpen: /*startModal*/ ctx[0],
+				toggle,
 				$$slots: { default: [create_default_slot_1] },
 				$$scope: { ctx }
 			}
@@ -141,31 +353,47 @@ function create_default_slot(ctx) {
 	return {
 		c() {
 			create_component(row.$$.fragment);
+			t = space();
+			create_component(modal.$$.fragment);
 		},
 		m(target, anchor) {
 			mount_component(row, target, anchor);
+			insert(target, t, anchor);
+			mount_component(modal, target, anchor);
 			current = true;
 		},
 		p(ctx, dirty) {
 			const row_changes = {};
 
-			if (dirty & /*$$scope*/ 1) {
+			if (dirty & /*$$scope*/ 4) {
 				row_changes.$$scope = { dirty, ctx };
 			}
 
 			row.$set(row_changes);
+			const modal_changes = {};
+			if (dirty & /*startModal*/ 1) modal_changes.isOpen = /*startModal*/ ctx[0];
+
+			if (dirty & /*$$scope*/ 4) {
+				modal_changes.$$scope = { dirty, ctx };
+			}
+
+			modal.$set(modal_changes);
 		},
 		i(local) {
 			if (current) return;
 			transition_in(row.$$.fragment, local);
+			transition_in(modal.$$.fragment, local);
 			current = true;
 		},
 		o(local) {
 			transition_out(row.$$.fragment, local);
+			transition_out(modal.$$.fragment, local);
 			current = false;
 		},
 		d(detaching) {
 			destroy_component(row, detaching);
+			if (detaching) detach(t);
+			destroy_component(modal, detaching);
 		}
 	};
 }
@@ -197,7 +425,7 @@ function create_fragment(ctx) {
 		p(ctx, [dirty]) {
 			const container_changes = {};
 
-			if (dirty & /*$$scope*/ 1) {
+			if (dirty & /*$$scope, startModal*/ 5) {
 				container_changes.$$scope = { dirty, ctx };
 			}
 
@@ -219,10 +447,17 @@ function create_fragment(ctx) {
 	};
 }
 
+function instance($$self, $$props, $$invalidate) {
+	let startModal = false;
+	const toggleModal = () => $$invalidate(0, startModal = !startModal);
+	window.onload = toggleModal;
+	return [startModal];
+}
+
 class App extends SvelteComponent {
 	constructor(options) {
 		super();
-		init(this, options, null, create_fragment, safe_not_equal, {});
+		init(this, options, instance, create_fragment, safe_not_equal, {});
 	}
 }
 

@@ -1,5 +1,6 @@
 function noop() {
 }
+const identity = (x) => x;
 function assign(tar, src) {
   for (const k in src)
     tar[k] = src[k];
@@ -82,6 +83,62 @@ function compute_rest_props(props, keys) {
       rest[k] = props[k];
   return rest;
 }
+const is_client = typeof window !== "undefined";
+let now = is_client ? () => window.performance.now() : () => Date.now();
+let raf = is_client ? (cb) => requestAnimationFrame(cb) : noop;
+const tasks = new Set();
+function run_tasks(now2) {
+  tasks.forEach((task) => {
+    if (!task.c(now2)) {
+      tasks.delete(task);
+      task.f();
+    }
+  });
+  if (tasks.size !== 0)
+    raf(run_tasks);
+}
+function loop(callback) {
+  let task;
+  if (tasks.size === 0)
+    raf(run_tasks);
+  return {
+    promise: new Promise((fulfill) => {
+      tasks.add(task = {c: callback, f: fulfill});
+    }),
+    abort() {
+      tasks.delete(task);
+    }
+  };
+}
+function append(target, node) {
+  target.appendChild(node);
+}
+function append_styles(target, style_sheet_id, styles) {
+  const append_styles_to = get_root_for_style(target);
+  if (!append_styles_to.getElementById(style_sheet_id)) {
+    const style = element("style");
+    style.id = style_sheet_id;
+    style.textContent = styles;
+    append_stylesheet(append_styles_to, style);
+  }
+}
+function get_root_for_style(node) {
+  if (!node)
+    return document;
+  const root = node.getRootNode ? node.getRootNode() : node.ownerDocument;
+  if (root && root.host) {
+    return root;
+  }
+  return node.ownerDocument;
+}
+function append_empty_stylesheet(node) {
+  const style_element = element("style");
+  append_stylesheet(get_root_for_style(node), style_element);
+  return style_element.sheet;
+}
+function append_stylesheet(node, style) {
+  append(node.head || node, style);
+}
 function insert(target, node, anchor) {
   target.insertBefore(node, anchor || null);
 }
@@ -96,6 +153,13 @@ function text(data) {
 }
 function space() {
   return text(" ");
+}
+function empty() {
+  return text("");
+}
+function listen(node, event, handler, options) {
+  node.addEventListener(event, handler, options);
+  return () => node.removeEventListener(event, handler, options);
 }
 function attr(node, attribute, value) {
   if (value == null)
@@ -122,9 +186,115 @@ function set_attributes(node, attributes) {
 function children(element2) {
   return Array.from(element2.childNodes);
 }
+function set_data(text2, data) {
+  data = "" + data;
+  if (text2.wholeText !== data)
+    text2.data = data;
+}
+function toggle_class(element2, name, toggle) {
+  element2.classList[toggle ? "add" : "remove"](name);
+}
+function custom_event(type, detail, bubbles = false) {
+  const e = document.createEvent("CustomEvent");
+  e.initCustomEvent(type, bubbles, false, detail);
+  return e;
+}
+const managed_styles = new Map();
+let active = 0;
+function hash(str) {
+  let hash2 = 5381;
+  let i = str.length;
+  while (i--)
+    hash2 = (hash2 << 5) - hash2 ^ str.charCodeAt(i);
+  return hash2 >>> 0;
+}
+function create_style_information(doc, node) {
+  const info = {stylesheet: append_empty_stylesheet(node), rules: {}};
+  managed_styles.set(doc, info);
+  return info;
+}
+function create_rule(node, a, b, duration, delay, ease, fn, uid = 0) {
+  const step = 16.666 / duration;
+  let keyframes = "{\n";
+  for (let p = 0; p <= 1; p += step) {
+    const t = a + (b - a) * ease(p);
+    keyframes += p * 100 + `%{${fn(t, 1 - t)}}
+`;
+  }
+  const rule = keyframes + `100% {${fn(b, 1 - b)}}
+}`;
+  const name = `__svelte_${hash(rule)}_${uid}`;
+  const doc = get_root_for_style(node);
+  const {stylesheet, rules} = managed_styles.get(doc) || create_style_information(doc, node);
+  if (!rules[name]) {
+    rules[name] = true;
+    stylesheet.insertRule(`@keyframes ${name} ${rule}`, stylesheet.cssRules.length);
+  }
+  const animation = node.style.animation || "";
+  node.style.animation = `${animation ? `${animation}, ` : ""}${name} ${duration}ms linear ${delay}ms 1 both`;
+  active += 1;
+  return name;
+}
+function delete_rule(node, name) {
+  const previous = (node.style.animation || "").split(", ");
+  const next = previous.filter(name ? (anim) => anim.indexOf(name) < 0 : (anim) => anim.indexOf("__svelte") === -1);
+  const deleted = previous.length - next.length;
+  if (deleted) {
+    node.style.animation = next.join(", ");
+    active -= deleted;
+    if (!active)
+      clear_rules();
+  }
+}
+function clear_rules() {
+  raf(() => {
+    if (active)
+      return;
+    managed_styles.forEach((info) => {
+      const {stylesheet} = info;
+      let i = stylesheet.cssRules.length;
+      while (i--)
+        stylesheet.deleteRule(i);
+      info.rules = {};
+    });
+    managed_styles.clear();
+  });
+}
 let current_component;
 function set_current_component(component) {
   current_component = component;
+}
+function get_current_component() {
+  if (!current_component)
+    throw new Error("Function called outside component initialization");
+  return current_component;
+}
+function onMount(fn) {
+  get_current_component().$$.on_mount.push(fn);
+}
+function afterUpdate(fn) {
+  get_current_component().$$.after_update.push(fn);
+}
+function onDestroy(fn) {
+  get_current_component().$$.on_destroy.push(fn);
+}
+function createEventDispatcher() {
+  const component = get_current_component();
+  return (type, detail) => {
+    const callbacks = component.$$.callbacks[type];
+    if (callbacks) {
+      const event = custom_event(type, detail);
+      callbacks.slice().forEach((fn) => {
+        fn.call(component, event);
+      });
+    }
+  };
+}
+function bubble(component, event) {
+  const callbacks = component.$$.callbacks[event.type];
+  if (callbacks) {
+    callbacks.slice().forEach((fn) => fn.call(this, event));
+  }
 }
 const dirty_components = [];
 const binding_callbacks = [];
@@ -183,8 +353,34 @@ function update($$) {
     $$.after_update.forEach(add_render_callback);
   }
 }
+let promise;
+function wait() {
+  if (!promise) {
+    promise = Promise.resolve();
+    promise.then(() => {
+      promise = null;
+    });
+  }
+  return promise;
+}
+function dispatch(node, direction, kind) {
+  node.dispatchEvent(custom_event(`${direction ? "intro" : "outro"}${kind}`));
+}
 const outroing = new Set();
 let outros;
+function group_outros() {
+  outros = {
+    r: 0,
+    c: [],
+    p: outros
+  };
+}
+function check_outros() {
+  if (!outros.r) {
+    run_all(outros.c);
+  }
+  outros = outros.p;
+}
 function transition_in(block, local) {
   if (block && block.i) {
     outroing.delete(block);
@@ -206,6 +402,121 @@ function transition_out(block, local, detach2, callback) {
     });
     block.o(local);
   }
+}
+const null_transition = {duration: 0};
+function create_in_transition(node, fn, params) {
+  let config = fn(node, params);
+  let running = false;
+  let animation_name;
+  let task;
+  let uid = 0;
+  function cleanup() {
+    if (animation_name)
+      delete_rule(node, animation_name);
+  }
+  function go() {
+    const {delay = 0, duration = 300, easing = identity, tick: tick2 = noop, css} = config || null_transition;
+    if (css)
+      animation_name = create_rule(node, 0, 1, duration, delay, easing, css, uid++);
+    tick2(0, 1);
+    const start_time = now() + delay;
+    const end_time = start_time + duration;
+    if (task)
+      task.abort();
+    running = true;
+    add_render_callback(() => dispatch(node, true, "start"));
+    task = loop((now2) => {
+      if (running) {
+        if (now2 >= end_time) {
+          tick2(1, 0);
+          dispatch(node, true, "end");
+          cleanup();
+          return running = false;
+        }
+        if (now2 >= start_time) {
+          const t = easing((now2 - start_time) / duration);
+          tick2(t, 1 - t);
+        }
+      }
+      return running;
+    });
+  }
+  let started = false;
+  return {
+    start() {
+      if (started)
+        return;
+      started = true;
+      delete_rule(node);
+      if (is_function(config)) {
+        config = config();
+        wait().then(go);
+      } else {
+        go();
+      }
+    },
+    invalidate() {
+      started = false;
+    },
+    end() {
+      if (running) {
+        cleanup();
+        running = false;
+      }
+    }
+  };
+}
+function create_out_transition(node, fn, params) {
+  let config = fn(node, params);
+  let running = true;
+  let animation_name;
+  const group = outros;
+  group.r += 1;
+  function go() {
+    const {delay = 0, duration = 300, easing = identity, tick: tick2 = noop, css} = config || null_transition;
+    if (css)
+      animation_name = create_rule(node, 1, 0, duration, delay, easing, css);
+    const start_time = now() + delay;
+    const end_time = start_time + duration;
+    add_render_callback(() => dispatch(node, false, "start"));
+    loop((now2) => {
+      if (running) {
+        if (now2 >= end_time) {
+          tick2(0, 1);
+          dispatch(node, false, "end");
+          if (!--group.r) {
+            run_all(group.c);
+          }
+          return false;
+        }
+        if (now2 >= start_time) {
+          const t = easing((now2 - start_time) / duration);
+          tick2(1 - t, t);
+        }
+      }
+      return running;
+    });
+  }
+  if (is_function(config)) {
+    wait().then(() => {
+      config = config();
+      go();
+    });
+  } else {
+    go();
+  }
+  return {
+    end(reset) {
+      if (reset && config.tick) {
+        config.tick(1, 0);
+      }
+      if (running) {
+        if (animation_name)
+          delete_rule(node, animation_name);
+        running = false;
+      }
+    }
+  };
 }
 function get_spread_update(levels, updates) {
   const update2 = {};
@@ -350,4 +661,4 @@ class SvelteComponent {
   }
 }
 
-export { SvelteComponent as S, attr as a, detach as b, create_component as c, destroy_component as d, element as e, insert as f, space as g, transition_out as h, init as i, create_slot as j, assign as k, set_attributes as l, mount_component as m, get_all_dirty_from_scope as n, get_slot_changes as o, get_spread_update as p, compute_rest_props as q, exclude_internal_props as r, safe_not_equal as s, transition_in as t, update_slot_base as u };
+export { get_slot_changes as A, get_spread_update as B, set_data as C, noop as D, toggle_class as E, add_render_callback as F, create_in_transition as G, create_out_transition as H, onMount as I, append as J, is_function as K, onDestroy as L, append_styles as M, createEventDispatcher as N, afterUpdate as O, run_all as P, SvelteComponent as S, attr as a, detach as b, create_component as c, destroy_component as d, element as e, insert as f, space as g, transition_in as h, init as i, transition_out as j, empty as k, group_outros as l, mount_component as m, check_outros as n, compute_rest_props as o, assign as p, exclude_internal_props as q, bubble as r, safe_not_equal as s, text as t, binding_callbacks as u, create_slot as v, set_attributes as w, listen as x, update_slot_base as y, get_all_dirty_from_scope as z };
