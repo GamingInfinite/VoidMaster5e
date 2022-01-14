@@ -26,7 +26,13 @@
     <Row class="align-items-center" style="height: 100vh;">
       <Col class="">
         <div class="d-flex justify-content-center align-items-center panel">
-          Player
+            <img
+              src="https://raw.githubusercontent.com/GamingInfinite/VoidMaster5e/main/public/player.png"
+              alt="player"
+            />
+            <p class="panel-text">
+              Player
+            </p>
         </div>
       </Col>
       <Col class="">
@@ -42,7 +48,7 @@
           <img
             src="https://raw.githubusercontent.com/GamingInfinite/VoidMaster5e/main/public/voidmaster5elogo.png"
             alt="void master logo"
-            width=400px
+            width="400px"
           />
         </p>
         <p class="modal-text">
