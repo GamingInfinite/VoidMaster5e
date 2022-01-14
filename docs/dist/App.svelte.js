@@ -45,7 +45,7 @@ function create_default_slot_8(ctx) {
 	};
 }
 
-// (21:6) <Col class="">
+// (32:6) <Col class="">
 function create_default_slot_7(ctx) {
 	let div;
 
@@ -64,7 +64,7 @@ function create_default_slot_7(ctx) {
 	};
 }
 
-// (17:4) <Row class="align-items-center" style="height: 100vh;">
+// (26:4) <Row class="align-items-center" style="height: 100vh;">
 function create_default_slot_6(ctx) {
 	let col0;
 	let t;
@@ -134,13 +134,13 @@ function create_default_slot_6(ctx) {
 	};
 }
 
-// (26:6) <ModalHeader {toggleModal}>
+// (39:6) <ModalHeader {toggleModal}>
 function create_default_slot_5(ctx) {
 	let t;
 
 	return {
 		c() {
-			t = text("Funny Modal");
+			t = text("First Release");
 		},
 		m(target, anchor) {
 			insert(target, t, anchor);
@@ -151,24 +151,36 @@ function create_default_slot_5(ctx) {
 	};
 }
 
-// (29:6) <ModalBody>
+// (40:6) <ModalBody>
 function create_default_slot_4(ctx) {
-	let t;
+	let p0;
+	let t0;
+	let p1;
 
 	return {
 		c() {
-			t = text("We game sometimes.");
+			p0 = element("p");
+			p0.innerHTML = `<img src="https://raw.githubusercontent.com/GamingInfinite/VoidMaster5e/main/public/voidmaster5elogo.png" alt="void master logo" width="400px"/>`;
+			t0 = space();
+			p1 = element("p");
+			p1.textContent = "Uh technically not the first release yet, and this will be replaced\n          with a changelog that I update on the GitHub that gets read into the\n          app, and shown here.";
+			attr(p0, "class", "modal-logo");
+			attr(p1, "class", "modal-text");
 		},
 		m(target, anchor) {
-			insert(target, t, anchor);
+			insert(target, p0, anchor);
+			insert(target, t0, anchor);
+			insert(target, p1, anchor);
 		},
 		d(detaching) {
-			if (detaching) detach(t);
+			if (detaching) detach(p0);
+			if (detaching) detach(t0);
+			if (detaching) detach(p1);
 		}
 	};
 }
 
-// (33:8) <Button color="secondary" on:click={toggleModal}>
+// (55:8) <Button color="secondary" on:click={toggleModal}>
 function create_default_slot_3(ctx) {
 	let t;
 
@@ -185,7 +197,7 @@ function create_default_slot_3(ctx) {
 	};
 }
 
-// (32:6) <ModalFooter>
+// (54:6) <ModalFooter>
 function create_default_slot_2(ctx) {
 	let button;
 	let current;
@@ -232,7 +244,7 @@ function create_default_slot_2(ctx) {
 	};
 }
 
-// (25:4) <Modal isOpen={startModal} {toggleModal}>
+// (38:4) <Modal isOpen={startModal} {toggleModal}>
 function create_default_slot_1(ctx) {
 	let modalheader;
 	let t0;
@@ -325,7 +337,7 @@ function create_default_slot_1(ctx) {
 	};
 }
 
-// (16:2) <Container class="g-0 container-fluid">
+// (25:2) <Container class="g-0 container-fluid">
 function create_default_slot(ctx) {
 	let row;
 	let t;
