@@ -3,7 +3,7 @@
 
   let startModal = false;
 
-  funciton toggleModal() {
+  function toggleModal() {
     startModal = !startModal;
   }
 
