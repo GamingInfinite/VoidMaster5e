@@ -1,6 +1,7 @@
 {
   "imports": {
     "svelte/internal": "./svelte/internal.js",
+    "svelte/store": "./svelte/store.js",
     "sveltestrap": "./sveltestrap.js"
   }
 }
