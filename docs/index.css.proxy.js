@@ -1,0 +1,10 @@
+// [snowpack] add styles to the page (skip if no document exists)
+if (typeof document !== 'undefined') {
+  const code = "@font-face {\n  font-family: 'Roboto Condensed';\n  font-style: normal;\n  font-weight: 400;\n  font-display: swap;\n  src: url(https://fonts.gstatic.com/s/robotocondensed/v19/ieVl2ZhZI2eCN5jzbjEETS9weq8-59U.ttf) format('truetype');\n}\n@font-face {\n  font-family: 'Cinzel';\n  font-style: normal;\n  font-weight: 500;\n  font-display: swap;\n  src: url(https://fonts.gstatic.com/s/cinzel/v11/8vIU7ww63mVu7gtR-kwKxNvkNOjw-uTnTYo.ttf) format('truetype');\n}\nbody {\n  font-family: \"Roboto Condensed\", sans-serif;\n  background-color: #243447;\n  color: #aa0000;\n}\n.modal-content {\n  background-color: #243447;\n}\n.modal-header {\n  border-style: none;\n}\n.modal-footer {\n  border-style: none;\n}\n.modal-logo {\n  text-align: center;\n}\n.panel {\n  height: 80vh;\n  border-style: hidden solid hidden hidden;\n  border-radius: 50px;\n  background-color: #1f2b3a;\n  border-color: #aa0000;\n  margin-left: 20px;\n  margin-right: 20px;\n  padding: 0px;\n  opacity: 1;\n  transition: opacity 0.5s, width 1.5s, border-radius 0.5s, left 1.5s;\n}\n.panel:hover {\n  border-radius: 200px;\n}\n.panel-svg {\n  filter: invert(9%) sepia(51%) saturate(7447%) hue-rotate(356deg) brightness(60%) contrast(115%);\n}\n.panel.fade {\n  opacity: 0;\n  pointer-events: none;\n}\n.panel.full {\n  left: 0px !important;\n  width: calc(100vw - 40px) !important;\n}\n.panel-text {\n  padding-left: 40px;\n  font-size: 40px;\n  font-family: \"Roboto Condensed\", sans-serif;\n}\n.container-fluid {\n  width: 100vw;\n  max-width: 100vw;\n  margin: 0;\n  overflow: hidden;\n}\n";
+
+  const styleEl = document.createElement("style");
+  const codeEl = document.createTextNode(code);
+  styleEl.type = 'text/css';
+  styleEl.appendChild(codeEl);
+  document.head.appendChild(styleEl);
+}

@@ -50,7 +50,7 @@ function create_default_slot_8(ctx) {
 			insert(target, div, anchor);
 
 			if (!mounted) {
-				dispose = listen(div, "click", /*click_handler*/ ctx[2]);
+				dispose = listen(div, "click", /*click_handler*/ ctx[3]);
 				mounted = true;
 			}
 		},
@@ -63,7 +63,7 @@ function create_default_slot_8(ctx) {
 	};
 }
 
-// (47:4) <Col class="">
+// (77:4) <Col class="">
 function create_default_slot_7(ctx) {
 	let div;
 	let mounted;
@@ -80,7 +80,7 @@ function create_default_slot_7(ctx) {
 			insert(target, div, anchor);
 
 			if (!mounted) {
-				dispose = listen(div, "click", /*click_handler_1*/ ctx[3]);
+				dispose = listen(div, "click", /*click_handler_1*/ ctx[4]);
 				mounted = true;
 			}
 		},
@@ -93,7 +93,7 @@ function create_default_slot_7(ctx) {
 	};
 }
 
-// (32:2) <Row class="align-items-center" style="height: 100vh;">
+// (62:2) <Row class="align-items-center" style="height: 100vh;">
 function create_default_slot_6(ctx) {
 	let col0;
 	let t;
@@ -131,14 +131,14 @@ function create_default_slot_6(ctx) {
 		p(ctx, dirty) {
 			const col0_changes = {};
 
-			if (dirty & /*$$scope*/ 16) {
+			if (dirty & /*$$scope*/ 64) {
 				col0_changes.$$scope = { dirty, ctx };
 			}
 
 			col0.$set(col0_changes);
 			const col1_changes = {};
 
-			if (dirty & /*$$scope*/ 16) {
+			if (dirty & /*$$scope*/ 64) {
 				col1_changes.$$scope = { dirty, ctx };
 			}
 
@@ -163,7 +163,7 @@ function create_default_slot_6(ctx) {
 	};
 }
 
-// (63:4) <ModalHeader {toggleModal}>
+// (93:4) <ModalHeader {toggleModal}>
 function create_default_slot_5(ctx) {
 	let t;
 
@@ -180,7 +180,7 @@ function create_default_slot_5(ctx) {
 	};
 }
 
-// (64:4) <ModalBody>
+// (94:4) <ModalBody>
 function create_default_slot_4(ctx) {
 	let p0;
 	let t0;
@@ -209,7 +209,7 @@ function create_default_slot_4(ctx) {
 	};
 }
 
-// (79:6) <Button color="secondary" on:click={toggleModal}>
+// (109:6) <Button color="secondary" on:click={toggleModal}>
 function create_default_slot_3(ctx) {
 	let t;
 
@@ -226,7 +226,7 @@ function create_default_slot_3(ctx) {
 	};
 }
 
-// (78:4) <ModalFooter>
+// (108:4) <ModalFooter>
 function create_default_slot_2(ctx) {
 	let button;
 	let current;
@@ -252,7 +252,7 @@ function create_default_slot_2(ctx) {
 		p(ctx, dirty) {
 			const button_changes = {};
 
-			if (dirty & /*$$scope*/ 16) {
+			if (dirty & /*$$scope*/ 64) {
 				button_changes.$$scope = { dirty, ctx };
 			}
 
@@ -273,7 +273,7 @@ function create_default_slot_2(ctx) {
 	};
 }
 
-// (62:2) <Modal isOpen={modalToggle} {toggleModal}>
+// (92:2) <Modal isOpen={modalToggle} {toggleModal}>
 function create_default_slot_1(ctx) {
 	let modalheader;
 	let t0;
@@ -323,21 +323,21 @@ function create_default_slot_1(ctx) {
 		p(ctx, dirty) {
 			const modalheader_changes = {};
 
-			if (dirty & /*$$scope*/ 16) {
+			if (dirty & /*$$scope*/ 64) {
 				modalheader_changes.$$scope = { dirty, ctx };
 			}
 
 			modalheader.$set(modalheader_changes);
 			const modalbody_changes = {};
 
-			if (dirty & /*$$scope*/ 16) {
+			if (dirty & /*$$scope*/ 64) {
 				modalbody_changes.$$scope = { dirty, ctx };
 			}
 
 			modalbody.$set(modalbody_changes);
 			const modalfooter_changes = {};
 
-			if (dirty & /*$$scope*/ 16) {
+			if (dirty & /*$$scope*/ 64) {
 				modalfooter_changes.$$scope = { dirty, ctx };
 			}
 
@@ -366,7 +366,7 @@ function create_default_slot_1(ctx) {
 	};
 }
 
-// (31:0) <Container class="g-0 container-fluid">
+// (61:0) <Container class="g-0 container-fluid">
 function create_default_slot(ctx) {
 	let row;
 	let t;
@@ -406,7 +406,7 @@ function create_default_slot(ctx) {
 		p(ctx, dirty) {
 			const row_changes = {};
 
-			if (dirty & /*$$scope*/ 16) {
+			if (dirty & /*$$scope*/ 64) {
 				row_changes.$$scope = { dirty, ctx };
 			}
 
@@ -414,7 +414,7 @@ function create_default_slot(ctx) {
 			const modal_changes = {};
 			if (dirty & /*modalToggle*/ 1) modal_changes.isOpen = /*modalToggle*/ ctx[0];
 
-			if (dirty & /*$$scope*/ 16) {
+			if (dirty & /*$$scope*/ 64) {
 				modal_changes.$$scope = { dirty, ctx };
 			}
 
@@ -462,7 +462,7 @@ function create_fragment(ctx) {
 		p(ctx, [dirty]) {
 			const container_changes = {};
 
-			if (dirty & /*$$scope, modalToggle*/ 17) {
+			if (dirty & /*$$scope, modalToggle*/ 65) {
 				container_changes.$$scope = { dirty, ctx };
 			}
 
@@ -483,13 +483,9 @@ function create_fragment(ctx) {
 	};
 }
 
-function selectOption(element) {
-	var sel = document.getElementById(element);
-	sel.classList.add("fade");
-}
-
 function instance($$self, $$props, $$invalidate) {
 	var modalToggle;
+	var elementTransition = false;
 
 	startModal.subscribe(value => {
 		$$invalidate(0, modalToggle = value);
@@ -499,9 +495,39 @@ function instance($$self, $$props, $$invalidate) {
 		startModal.update(value => !value);
 	}
 
-	const click_handler = () => selectOption("DungeonMaster");
-	const click_handler_1 = () => selectOption("Player");
-	return [modalToggle, toggleModal, click_handler, click_handler_1];
+	function selectOption(element, callElement) {
+		var sel = document.getElementById(element);
+
+		if (sel == null || elementTransition) {
+			return;
+		}
+
+		elementTransition = true;
+		sel.classList.add("fade");
+		var call = document.getElementById(callElement);
+		var callx = call.getBoundingClientRect().left - 20;
+		var cally = call.getBoundingClientRect().top;
+		var callw = call.getBoundingClientRect().width;
+		var callh = call.getBoundingClientRect().height;
+		call.style.left = callx + "px";
+		call.style.top = cally + "px";
+		call.style.height = callh + "px";
+		call.style.width = callw + "px";
+		call.style.zIndex = 1;
+		call.style.position = "absolute";
+
+		sel.addEventListener("transitionstart", function () {
+			call.classList.add("full");
+		});
+
+		sel.addEventListener("transitionend", function () {
+			sel.parentNode.removeChild(sel);
+		});
+	}
+
+	const click_handler = () => selectOption("DungeonMaster", "Player");
+	const click_handler_1 = () => selectOption("Player", "DungeonMaster");
+	return [modalToggle, toggleModal, selectOption, click_handler, click_handler_1];
 }
 
 class Homepage extends SvelteComponent {

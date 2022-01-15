@@ -18,6 +18,7 @@ import {
 } from "../snowpack/pkg/svelte/internal.js";
 
 import Homepage from "./Viewports/Homepage.svelte.js";
+import "../index.css.proxy.js";
 
 function create_if_block(ctx) {
 	let switch_instance;
