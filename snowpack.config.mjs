@@ -7,6 +7,7 @@ export default {
   plugins: [
     /* ... */
     "@snowpack/plugin-svelte",
+    "snowpack-plugin-less",
   ],
   routes: [
     /* Enable an SPA Fallback in development: */
@@ -18,11 +19,7 @@ export default {
   },
   packageOptions: {
     /* ... */
-    knownEntrypoints: [
-      "svelte",
-      "svelte/transition",
-      "svelte/store",
-    ],
+    knownEntrypoints: ["svelte", "svelte/transition", "svelte/store"],
   },
   devOptions: {
     /* ... */

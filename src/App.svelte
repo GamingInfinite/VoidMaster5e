@@ -1,5 +1,6 @@
 <script>
   import Homepage from "./Viewports/Homepage.svelte";
+  import "../public/index.less"
 
   const views = [Homepage];
 

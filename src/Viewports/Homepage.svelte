@@ -13,18 +13,48 @@
   import { startModal } from "../stores.js";
 
   var modalToggle;
+  var elementTransition = false;
 
-  startModal.subscribe(value => {
-      modalToggle = value;
-  })
+  startModal.subscribe((value) => {
+    modalToggle = value;
+  });
 
   function toggleModal() {
     startModal.update((value) => !value);
   }
 
-  function selectOption(element) {
+  function selectOption(element, callElement) {
     var sel = document.getElementById(element);
+
+    if (sel == null || elementTransition) {
+      return;
+    }
+
+    elementTransition = true;
+
     sel.classList.add("fade");
+
+    var call = document.getElementById(callElement);
+    var callx = call.getBoundingClientRect().left - 20;
+    var cally = call.getBoundingClientRect().top;
+    var callw = call.getBoundingClientRect().width;
+    var callh = call.getBoundingClientRect().height;
+
+    call.style.left = callx + "px";
+    call.style.top = cally + "px";
+    call.style.height = callh + "px";
+    call.style.width = callw + "px";
+    call.style.zIndex = 1;
+    call.style.position = "absolute";
+
+    sel.addEventListener("transitionstart", function () {
+        call.classList.add("full");
+    });
+
+    sel.addEventListener("transitionend", function () {
+      sel.parentNode.removeChild(sel);
+      
+    });
   }
 </script>
 
@@ -34,7 +64,7 @@
       <div
         class="d-flex justify-content-center align-items-center panel"
         id="Player"
-        on:click={() => selectOption("DungeonMaster")}
+        on:click={() => selectOption("DungeonMaster", "Player")}
       >
         <img
           src="https://raw.githubusercontent.com/GamingInfinite/VoidMaster5e/main/public/player.svg"
@@ -48,7 +78,7 @@
       <div
         class="d-flex justify-content-center align-items-center panel"
         id="DungeonMaster"
-        on:click={() => selectOption("Player")}
+        on:click={() => selectOption("Player", "DungeonMaster")}
       >
         <img
           src="https://raw.githubusercontent.com/GamingInfinite/VoidMaster5e/5f737668a5df15bdf88f49a791ccf76f635b8969/public/dm.svg"
