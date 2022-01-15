@@ -8,7 +8,9 @@ import {
 	element,
 	init,
 	insert,
+	listen,
 	mount_component,
+	noop,
 	safe_not_equal,
 	space,
 	text,
@@ -29,45 +31,67 @@ import {
 
 function create_default_slot_8(ctx) {
 	let div;
+	let mounted;
+	let dispose;
 
 	return {
 		c() {
 			div = element("div");
 
-			div.innerHTML = `<img src="https://raw.githubusercontent.com/GamingInfinite/VoidMaster5e/main/public/player.png" alt="player"/> 
-            <p class="panel-text">Player</p>`;
+			div.innerHTML = `<img src="https://raw.githubusercontent.com/GamingInfinite/VoidMaster5e/main/public/player.svg" alt="player"/> 
+          <p class="panel-text">Player</p>`;
 
 			attr(div, "class", "d-flex justify-content-center align-items-center panel");
+			attr(div, "id", "Player");
 		},
 		m(target, anchor) {
 			insert(target, div, anchor);
+
+			if (!mounted) {
+				dispose = listen(div, "click", /*click_handler*/ ctx[2]);
+				mounted = true;
+			}
 		},
+		p: noop,
 		d(detaching) {
 			if (detaching) detach(div);
+			mounted = false;
+			dispose();
 		}
 	};
 }
 
-// (38:6) <Col class="">
+// (41:6) <Col class="">
 function create_default_slot_7(ctx) {
 	let div;
+	let mounted;
+	let dispose;
 
 	return {
 		c() {
 			div = element("div");
-			div.textContent = "Dungeon Master";
+			div.innerHTML = `<img src="https://raw.githubusercontent.com/GamingInfinite/VoidMaster5e/5f737668a5df15bdf88f49a791ccf76f635b8969/public/dm.svg" alt="Dungeon Master" height="500px"/>`;
 			attr(div, "class", "d-flex justify-content-center align-items-center panel");
+			attr(div, "id", "DungeonMaster");
 		},
 		m(target, anchor) {
 			insert(target, div, anchor);
+
+			if (!mounted) {
+				dispose = listen(div, "click", /*click_handler_1*/ ctx[3]);
+				mounted = true;
+			}
 		},
+		p: noop,
 		d(detaching) {
 			if (detaching) detach(div);
+			mounted = false;
+			dispose();
 		}
 	};
 }
 
-// (26:4) <Row class="align-items-center" style="height: 100vh;">
+// (31:4) <Row class="align-items-center" style="height: 100vh;">
 function create_default_slot_6(ctx) {
 	let col0;
 	let t;
@@ -105,14 +129,14 @@ function create_default_slot_6(ctx) {
 		p(ctx, dirty) {
 			const col0_changes = {};
 
-			if (dirty & /*$$scope*/ 4) {
+			if (dirty & /*$$scope*/ 16) {
 				col0_changes.$$scope = { dirty, ctx };
 			}
 
 			col0.$set(col0_changes);
 			const col1_changes = {};
 
-			if (dirty & /*$$scope*/ 4) {
+			if (dirty & /*$$scope*/ 16) {
 				col1_changes.$$scope = { dirty, ctx };
 			}
 
@@ -137,7 +161,7 @@ function create_default_slot_6(ctx) {
 	};
 }
 
-// (45:6) <ModalHeader {toggleModal}>
+// (52:6) <ModalHeader {toggleModal}>
 function create_default_slot_5(ctx) {
 	let t;
 
@@ -154,7 +178,7 @@ function create_default_slot_5(ctx) {
 	};
 }
 
-// (46:6) <ModalBody>
+// (53:6) <ModalBody>
 function create_default_slot_4(ctx) {
 	let p0;
 	let t0;
@@ -183,7 +207,7 @@ function create_default_slot_4(ctx) {
 	};
 }
 
-// (61:8) <Button color="secondary" on:click={toggleModal}>
+// (68:8) <Button color="secondary" on:click={toggleModal}>
 function create_default_slot_3(ctx) {
 	let t;
 
@@ -200,7 +224,7 @@ function create_default_slot_3(ctx) {
 	};
 }
 
-// (60:6) <ModalFooter>
+// (67:6) <ModalFooter>
 function create_default_slot_2(ctx) {
 	let button;
 	let current;
@@ -226,7 +250,7 @@ function create_default_slot_2(ctx) {
 		p(ctx, dirty) {
 			const button_changes = {};
 
-			if (dirty & /*$$scope*/ 4) {
+			if (dirty & /*$$scope*/ 16) {
 				button_changes.$$scope = { dirty, ctx };
 			}
 
@@ -247,7 +271,7 @@ function create_default_slot_2(ctx) {
 	};
 }
 
-// (44:4) <Modal isOpen={startModal} {toggleModal}>
+// (51:4) <Modal isOpen={startModal} {toggleModal}>
 function create_default_slot_1(ctx) {
 	let modalheader;
 	let t0;
@@ -297,21 +321,21 @@ function create_default_slot_1(ctx) {
 		p(ctx, dirty) {
 			const modalheader_changes = {};
 
-			if (dirty & /*$$scope*/ 4) {
+			if (dirty & /*$$scope*/ 16) {
 				modalheader_changes.$$scope = { dirty, ctx };
 			}
 
 			modalheader.$set(modalheader_changes);
 			const modalbody_changes = {};
 
-			if (dirty & /*$$scope*/ 4) {
+			if (dirty & /*$$scope*/ 16) {
 				modalbody_changes.$$scope = { dirty, ctx };
 			}
 
 			modalbody.$set(modalbody_changes);
 			const modalfooter_changes = {};
 
-			if (dirty & /*$$scope*/ 4) {
+			if (dirty & /*$$scope*/ 16) {
 				modalfooter_changes.$$scope = { dirty, ctx };
 			}
 
@@ -340,7 +364,7 @@ function create_default_slot_1(ctx) {
 	};
 }
 
-// (25:2) <Container class="g-0 container-fluid">
+// (30:2) <Container class="g-0 container-fluid">
 function create_default_slot(ctx) {
 	let row;
 	let t;
@@ -380,7 +404,7 @@ function create_default_slot(ctx) {
 		p(ctx, dirty) {
 			const row_changes = {};
 
-			if (dirty & /*$$scope*/ 4) {
+			if (dirty & /*$$scope*/ 16) {
 				row_changes.$$scope = { dirty, ctx };
 			}
 
@@ -388,7 +412,7 @@ function create_default_slot(ctx) {
 			const modal_changes = {};
 			if (dirty & /*startModal*/ 1) modal_changes.isOpen = /*startModal*/ ctx[0];
 
-			if (dirty & /*$$scope*/ 4) {
+			if (dirty & /*$$scope*/ 16) {
 				modal_changes.$$scope = { dirty, ctx };
 			}
 
@@ -440,7 +464,7 @@ function create_fragment(ctx) {
 		p(ctx, [dirty]) {
 			const container_changes = {};
 
-			if (dirty & /*$$scope, startModal*/ 5) {
+			if (dirty & /*$$scope, startModal*/ 17) {
 				container_changes.$$scope = { dirty, ctx };
 			}
 
@@ -462,6 +486,11 @@ function create_fragment(ctx) {
 	};
 }
 
+function selectOption(element) {
+	var sel = document.getElementById(element);
+	sel.classList.add("fade");
+}
+
 function instance($$self, $$props, $$invalidate) {
 	let startModal = false;
 
@@ -473,7 +502,9 @@ function instance($$self, $$props, $$invalidate) {
 		toggleModal();
 	};
 
-	return [startModal, toggleModal];
+	const click_handler = () => selectOption("DungeonMaster");
+	const click_handler_1 = () => selectOption("Player");
+	return [startModal, toggleModal, click_handler, click_handler_1];
 }
 
 class App extends SvelteComponent {
