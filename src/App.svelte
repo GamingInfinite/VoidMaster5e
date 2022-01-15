@@ -19,25 +19,32 @@
   window.onload = function AppLoad() {
     toggleModal();
   };
+
+  function selectOption(element) {
+    var sel = document.getElementById(element);
+    sel.classList.add("fade");
+  }
 </script>
 
 <div class="App">
   <Container class="g-0 container-fluid">
     <Row class="align-items-center" style="height: 100vh;">
       <Col class="">
-        <div class="d-flex justify-content-center align-items-center panel">
-            <img
-              src="https://raw.githubusercontent.com/GamingInfinite/VoidMaster5e/main/public/player.png"
-              alt="player"
-            />
-            <p class="panel-text">
-              Player
-            </p>
+        <div class="d-flex justify-content-center align-items-center panel" id="Player"on:click={() => selectOption("DungeonMaster")}>
+          <img
+            src="https://raw.githubusercontent.com/GamingInfinite/VoidMaster5e/main/public/player.svg"
+            alt="player"
+          />
+          <p class="panel-text">Player</p>
         </div>
       </Col>
       <Col class="">
-        <div class="d-flex justify-content-center align-items-center panel">
-          Dungeon Master
+        <div class="d-flex justify-content-center align-items-center panel" id="DungeonMaster" on:click={() => selectOption("Player")}>
+          <img
+            src="https://raw.githubusercontent.com/GamingInfinite/VoidMaster5e/5f737668a5df15bdf88f49a791ccf76f635b8969/public/dm.svg"
+            alt="Dungeon Master"
+            height="500px"
+          />
         </div>
       </Col>
     </Row>
