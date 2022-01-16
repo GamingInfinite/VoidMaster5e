@@ -10,7 +10,9 @@
     Button,
   } from "sveltestrap";
 
-  import { startModal } from "../stores.js";
+  import { startModal, viewport } from "../stores.js";
+
+  import "../../public/pagecss/Homepage.less";
 
   var modalToggle;
   var elementTransition = false;
@@ -48,19 +50,27 @@
     call.style.position = "absolute";
 
     sel.addEventListener("transitionstart", function () {
-        call.classList.add("full");
+      call.classList.add("full");
     });
 
-    sel.addEventListener("transitionend", function () {
-      sel.parentNode.removeChild(sel);
-      
+    call.addEventListener("transitionend", function (event) {
+      if (event.propertyName != "width") {
+        return;
+      }
+      switch (callElement) {
+        case "Player":
+          viewport.set(1);
+          break;
+        default:
+          break;
+      }
     });
   }
 </script>
 
 <Container class="g-0 container-fluid">
   <Row class="align-items-center" style="height: 100vh;">
-    <Col class="">
+    <Col class="" id="fun">
       <div
         class="d-flex justify-content-center align-items-center panel"
         id="Player"
@@ -83,7 +93,6 @@
         <img
           src="https://raw.githubusercontent.com/GamingInfinite/VoidMaster5e/5f737668a5df15bdf88f49a791ccf76f635b8969/public/dm.svg"
           alt="Dungeon Master"
-          height="500px"
           class="panel-svg"
         />
       </div>

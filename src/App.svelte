@@ -1,20 +1,26 @@
 <script>
   import Homepage from "./Viewports/Homepage.svelte";
-  import "../public/index.less"
+  import CharacterSelect from "./Viewports/CharacterSelect.svelte";
+  import "../public/index.less";
 
-  const views = [Homepage];
+  import { viewport } from "./stores";
 
-  let currentView = 0;
+  const views = [Homepage, CharacterSelect, CharacterSelect];
+
   let viewportComponent = null;
 
-  function updateViewportComponent() {
+  viewport.set(0);
+
+  viewport.subscribe((value) => {
+    updateViewportComponent(value);
+  });
+
+  function updateViewportComponent(currentView) {
     viewportComponent = views[currentView];
   }
-  updateViewportComponent();
+  updateViewportComponent(0);
 </script>
 
 <div class="App" id="viewport">
-  {#if viewportComponent == views[currentView]}
-    <svelte:component this={viewportComponent} />
-  {/if}
+  <svelte:component this={viewportComponent} />
 </div>

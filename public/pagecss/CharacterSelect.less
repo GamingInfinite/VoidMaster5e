@@ -5,8 +5,12 @@
 @card-color: darken(@background-color, 5%);
 @accent: #aa0000;
 
-body {
-    font-family: "Roboto Condensed", sans-serif;
-    background-color: @background-color;
-    color: @accent;
+@keyframes skeleton-loading {
+    0% {
+        background-color: hsl(200, 20%, 70%);
+    }
+
+    100% {
+        background-color: hsl(200, 20%, 95%);
+    }
 }
