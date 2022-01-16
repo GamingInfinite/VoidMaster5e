@@ -29,7 +29,8 @@ import {
 	Button
 } from "../../snowpack/pkg/sveltestrap.js";
 
-import { startModal } from "../stores.js";
+import { startModal, viewport } from "../stores.js";
+import "../../pagecss/Homepage.css.proxy.js";
 
 function create_default_slot_8(ctx) {
 	let div;
@@ -63,7 +64,7 @@ function create_default_slot_8(ctx) {
 	};
 }
 
-// (77:4) <Col class="">
+// (87:4) <Col class="">
 function create_default_slot_7(ctx) {
 	let div;
 	let mounted;
@@ -72,7 +73,7 @@ function create_default_slot_7(ctx) {
 	return {
 		c() {
 			div = element("div");
-			div.innerHTML = `<img src="https://raw.githubusercontent.com/GamingInfinite/VoidMaster5e/5f737668a5df15bdf88f49a791ccf76f635b8969/public/dm.svg" alt="Dungeon Master" height="500px" class="panel-svg"/>`;
+			div.innerHTML = `<img src="https://raw.githubusercontent.com/GamingInfinite/VoidMaster5e/5f737668a5df15bdf88f49a791ccf76f635b8969/public/dm.svg" alt="Dungeon Master" class="panel-svg"/>`;
 			attr(div, "class", "d-flex justify-content-center align-items-center panel");
 			attr(div, "id", "DungeonMaster");
 		},
@@ -93,7 +94,7 @@ function create_default_slot_7(ctx) {
 	};
 }
 
-// (62:2) <Row class="align-items-center" style="height: 100vh;">
+// (72:2) <Row class="align-items-center" style="height: 100vh;">
 function create_default_slot_6(ctx) {
 	let col0;
 	let t;
@@ -103,6 +104,7 @@ function create_default_slot_6(ctx) {
 	col0 = new Col({
 			props: {
 				class: "",
+				id: "fun",
 				$$slots: { default: [create_default_slot_8] },
 				$$scope: { ctx }
 			}
@@ -163,7 +165,7 @@ function create_default_slot_6(ctx) {
 	};
 }
 
-// (93:4) <ModalHeader {toggleModal}>
+// (102:4) <ModalHeader {toggleModal}>
 function create_default_slot_5(ctx) {
 	let t;
 
@@ -180,7 +182,7 @@ function create_default_slot_5(ctx) {
 	};
 }
 
-// (94:4) <ModalBody>
+// (103:4) <ModalBody>
 function create_default_slot_4(ctx) {
 	let p0;
 	let t0;
@@ -209,7 +211,7 @@ function create_default_slot_4(ctx) {
 	};
 }
 
-// (109:6) <Button color="secondary" on:click={toggleModal}>
+// (118:6) <Button color="secondary" on:click={toggleModal}>
 function create_default_slot_3(ctx) {
 	let t;
 
@@ -226,7 +228,7 @@ function create_default_slot_3(ctx) {
 	};
 }
 
-// (108:4) <ModalFooter>
+// (117:4) <ModalFooter>
 function create_default_slot_2(ctx) {
 	let button;
 	let current;
@@ -273,7 +275,7 @@ function create_default_slot_2(ctx) {
 	};
 }
 
-// (92:2) <Modal isOpen={modalToggle} {toggleModal}>
+// (101:2) <Modal isOpen={modalToggle} {toggleModal}>
 function create_default_slot_1(ctx) {
 	let modalheader;
 	let t0;
@@ -366,7 +368,7 @@ function create_default_slot_1(ctx) {
 	};
 }
 
-// (61:0) <Container class="g-0 container-fluid">
+// (71:0) <Container class="g-0 container-fluid">
 function create_default_slot(ctx) {
 	let row;
 	let t;
@@ -520,8 +522,18 @@ function instance($$self, $$props, $$invalidate) {
 			call.classList.add("full");
 		});
 
-		sel.addEventListener("transitionend", function () {
-			sel.parentNode.removeChild(sel);
+		call.addEventListener("transitionend", function (event) {
+			if (event.propertyName != "width") {
+				return;
+			}
+
+			switch (callElement) {
+				case "Player":
+					viewport.set(1);
+					break;
+				default:
+					break;
+			}
 		});
 	}
 

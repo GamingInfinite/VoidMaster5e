@@ -7,7 +7,6 @@ import {
 	destroy_component,
 	detach,
 	element,
-	empty,
 	group_outros,
 	init,
 	insert,
@@ -18,11 +17,13 @@ import {
 } from "../snowpack/pkg/svelte/internal.js";
 
 import Homepage from "./Viewports/Homepage.svelte.js";
+import CharacterSelect from "./Viewports/CharacterSelect.svelte.js";
 import "../index.css.proxy.js";
+import { viewport } from "./stores.js";
 
-function create_if_block(ctx) {
+function create_fragment(ctx) {
+	let div;
 	let switch_instance;
-	let switch_instance_anchor;
 	let current;
 	var switch_value = /*viewportComponent*/ ctx[0];
 
@@ -36,18 +37,21 @@ function create_if_block(ctx) {
 
 	return {
 		c() {
+			div = element("div");
 			if (switch_instance) create_component(switch_instance.$$.fragment);
-			switch_instance_anchor = empty();
+			attr(div, "class", "App");
+			attr(div, "id", "viewport");
 		},
 		m(target, anchor) {
+			insert(target, div, anchor);
+
 			if (switch_instance) {
-				mount_component(switch_instance, target, anchor);
+				mount_component(switch_instance, div, null);
 			}
 
-			insert(target, switch_instance_anchor, anchor);
 			current = true;
 		},
-		p(ctx, dirty) {
+		p(ctx, [dirty]) {
 			if (switch_value !== (switch_value = /*viewportComponent*/ ctx[0])) {
 				if (switch_instance) {
 					group_outros();
@@ -64,7 +68,7 @@ function create_if_block(ctx) {
 					switch_instance = new switch_value(switch_props(ctx));
 					create_component(switch_instance.$$.fragment);
 					transition_in(switch_instance.$$.fragment, 1);
-					mount_component(switch_instance, switch_instance_anchor.parentNode, switch_instance_anchor);
+					mount_component(switch_instance, div, null);
 				} else {
 					switch_instance = null;
 				}
@@ -82,81 +86,27 @@ function create_if_block(ctx) {
 			current = false;
 		},
 		d(detaching) {
-			if (detaching) detach(switch_instance_anchor);
-			if (switch_instance) destroy_component(switch_instance, detaching);
-		}
-	};
-}
-
-function create_fragment(ctx) {
-	let div;
-	let current;
-	let if_block = /*viewportComponent*/ ctx[0] == /*views*/ ctx[1][currentView] && create_if_block(ctx);
-
-	return {
-		c() {
-			div = element("div");
-			if (if_block) if_block.c();
-			attr(div, "class", "App");
-			attr(div, "id", "viewport");
-		},
-		m(target, anchor) {
-			insert(target, div, anchor);
-			if (if_block) if_block.m(div, null);
-			current = true;
-		},
-		p(ctx, [dirty]) {
-			if (/*viewportComponent*/ ctx[0] == /*views*/ ctx[1][currentView]) {
-				if (if_block) {
-					if_block.p(ctx, dirty);
-
-					if (dirty & /*viewportComponent*/ 1) {
-						transition_in(if_block, 1);
-					}
-				} else {
-					if_block = create_if_block(ctx);
-					if_block.c();
-					transition_in(if_block, 1);
-					if_block.m(div, null);
-				}
-			} else if (if_block) {
-				group_outros();
-
-				transition_out(if_block, 1, 1, () => {
-					if_block = null;
-				});
-
-				check_outros();
-			}
-		},
-		i(local) {
-			if (current) return;
-			transition_in(if_block);
-			current = true;
-		},
-		o(local) {
-			transition_out(if_block);
-			current = false;
-		},
-		d(detaching) {
 			if (detaching) detach(div);
-			if (if_block) if_block.d();
+			if (switch_instance) destroy_component(switch_instance);
 		}
 	};
 }
-
-let currentView = 0;
 
 function instance($$self, $$props, $$invalidate) {
-	const views = [Homepage];
+	const views = [Homepage, CharacterSelect, CharacterSelect];
 	let viewportComponent = null;
+	viewport.set(0);
 
-	function updateViewportComponent() {
+	viewport.subscribe(value => {
+		updateViewportComponent(value);
+	});
+
+	function updateViewportComponent(currentView) {
 		$$invalidate(0, viewportComponent = views[currentView]);
 	}
 
-	updateViewportComponent();
-	return [viewportComponent, views];
+	updateViewportComponent(0);
+	return [viewportComponent];
 }
 
 class App extends SvelteComponent {

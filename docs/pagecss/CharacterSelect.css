@@ -12,8 +12,11 @@
   font-display: swap;
   src: url(https://fonts.gstatic.com/s/cinzel/v11/8vIU7ww63mVu7gtR-kwKxNvkNOjw-uTnTYo.ttf) format('truetype');
 }
-body {
-  font-family: "Roboto Condensed", sans-serif;
-  background-color: #243447;
-  color: #aa0000;
+@keyframes skeleton-loading {
+  0% {
+    background-color: hsl(200, 20%, 70%);
+  }
+  100% {
+    background-color: hsl(200, 20%, 95%);
+  }
 }
