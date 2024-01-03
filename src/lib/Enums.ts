@@ -20,6 +20,8 @@ export enum Language {
     Common,
     Elvish,
     Vieran,
+    Primordial,
+    Celestial,
     Extra
 }
 
@@ -30,6 +32,7 @@ export enum FeatureType {
     RaceFeature,
     ASIFeat,
     Flavor,
+    Passive,
     Set,
     FightingStyle,
     Action,

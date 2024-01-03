@@ -14,6 +14,7 @@
 
   // test stuff because im making the character creator to start
   let creationData: PlayerCreationData = new PlayerCreationData();
+
   let statMode = StatModes.Dice;
   const standardArray = [8, 10, 12, 13, 14, 15];
 
@@ -386,7 +387,7 @@
             </div>
             <!-- #endregion -->
             <!-- #region Level-Based Class Features -->
-            <FeatureList list={classt.features} level={classt.level} />
+            <FeatureList list={classt.features} level={classt._level} />
             <!-- #endregion -->
           {/if}
         {/each}
