@@ -30,6 +30,16 @@ export const Tags = {
   muskets: new Tag("Muskets"),
 };
 
-export const Items = {
+export const Items: { [key: string]: Item } = {
   smithTools: new Item("Smith's Tools", [Tags.artisanTools]),
 };
+
+export function getItemsOfTag(tag: Tag): Item[] {
+  let items: Item[] = [];
+  for (let item of Object.getOwnPropertyNames(Items)) {
+    if (Items[item].tags.includes(tag)) {
+      items.push(Items[item]);
+    }
+  }
+  return items;
+}

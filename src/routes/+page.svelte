@@ -2,7 +2,6 @@
   import { Classes, PlayerCreationData, Races } from "$lib/Character";
   import { diceRoll } from "$lib/DiceUtils";
   import { FeatureType, Language, Size, StatNames } from "$lib/Enums";
-  import FeatureList from "$lib/components/FeatureList.svelte";
   import { toasts } from "../stores";
 
   enum StatModes {
@@ -307,17 +306,7 @@
             {/each}
           </div>
         </div>
-        <FeatureList list={creationData.race.ASIFeatures} />
-        {#if creationData.race.subraces[creationData.subRace]}
-          <FeatureList
-            list={creationData.race.subraces[creationData.subRace].ASIFeatures}
-          />
-          <FeatureList
-            list={creationData.race.subraces[creationData.subRace]
-              .RacialAbilities}
-          />
-        {/if}
-        <FeatureList list={creationData.race.RacialAbilities} />
+        <!-- Rework Languages Please for the love of god -->
       {/if}
       <!-- #endregion -->
       <!-- #region Classes -->
@@ -399,7 +388,6 @@
             </div>
             <!-- #endregion -->
             <!-- #region Level-Based Class Features -->
-            <FeatureList list={classt.features} level={classt._level} />
             <!-- #endregion -->
           {/if}
         {/each}

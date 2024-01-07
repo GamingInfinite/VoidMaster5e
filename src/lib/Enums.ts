@@ -26,18 +26,18 @@ export enum Language {
 }
 
 export enum FeatureType {
-    ASI,
+    ASI, //Handled
     ArchetypeLevel,
-    Unlock,
-    UnlockSet,
+    Unlock,//Handled?
+    UnlockSet,//Handled?
     RaceFeature,
-    ASIFeat,
-    Flavor,
+    ASIFeat, //Handled
+    Flavor, //Handled
     Passive,
-    Set,
+    Set, //Handled?
     FightingStyle,
     Action,
-    Archetype
+    Archetype //Needs Rework
 }
 
 export enum UnlockType {
