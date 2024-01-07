@@ -11,6 +11,8 @@
   <p class="font-bold">Ability Score Increase.</p>
   {#if stat == "all"}
     <p>Your ability scores each increase by 1.</p>
+  {:else if stat == "any"}
+    <p>You get {value} points to increase your stats.</p>
   {:else}
     <div class="flex flex-row gap-1 items-center">
       <p>

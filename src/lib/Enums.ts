@@ -28,7 +28,8 @@ export enum Language {
 export enum FeatureType {
     ASI,
     ArchetypeLevel,
-    Proficiency,
+    Unlock,
+    UnlockSet,
     RaceFeature,
     ASIFeat,
     Flavor,
@@ -37,4 +38,11 @@ export enum FeatureType {
     FightingStyle,
     Action,
     Archetype
+}
+
+export enum UnlockType {
+  Spell,
+  SkillProficiency,
+  HalfProficiency,
+  ItemProficiency
 }
