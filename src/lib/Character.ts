@@ -1,6 +1,11 @@
 import { FeatureType, Language, Size, StatNames, UnlockType } from "./Enums";
-import { ASIFeature, Feature } from "./FeatureTypes";
-import { Tags, type Tag } from "./Items";
+import {
+  ASIFeature,
+  Feature,
+  FeatureProficiency,
+  RaceFeatures,
+} from "./FeatureTypes";
+import { Tags, type ItemTag } from "./Items";
 import { Skill, Skills } from "./Structures";
 
 class PlayerCharacter {
@@ -20,7 +25,7 @@ class PlayerCharacter {
 export class PlayerCreationData {
   name: string;
   race: Race;
-  subRace: number;
+  subRace: number = -1;
   classes: Class[] = [];
   baseStats: StatBlock;
 
@@ -132,9 +137,9 @@ class Class {
   hitDice: number;
   savingThrows: StatNames[];
   skillProficiencies: Skill[];
-  armorProficiencies: Tag[];
-  weaponProficiencies: Tag[];
-  toolProficiencies: Tag[];
+  armorProficiencies: ItemTag[];
+  weaponProficiencies: ItemTag[];
+  toolProficiencies: ItemTag[];
 
   constructor(
     name: string,
@@ -143,9 +148,9 @@ class Class {
     dice: number,
     savingThrows: StatNames[],
     skills: Skill[],
-    armor: Tag[] = [],
-    weapons: Tag[] = [],
-    tools: Tag[] = []
+    armor: ItemTag[] = [],
+    weapons: ItemTag[] = [],
+    tools: ItemTag[] = []
   ) {
     this.name = name;
     // this.features = features;
@@ -171,41 +176,26 @@ export const Races: Race[] = [
   new Race(
     { name: "Viera", descriptor: "Vieran", plural: "Viera" },
     { movement: 35, maxAge: 240, size: Size.Medium },
-    [new Feature({ dex: 2 }, "ASI", "ASI", FeatureType.ASI)],
-    [],
+    [new ASIFeature(2, StatNames.dex)],
+    [
+      RaceFeatures.lapineHop,
+      RaceFeatures.lucky,
+      RaceFeatures.maskOfTheWild,
+      RaceFeatures.speakWithSmallBeasts,
+    ],
     [Language.Common, Language.Vieran],
     [
       new SubRace(
         { name: "Rava", descriptor: "Rava", plural: "Rava" },
         { movement: 35, maxAge: 240, size: Size.Medium },
         [new ASIFeature(1, StatNames.wis)],
-        [
-          new Feature(
-            {
-              type: UnlockType.SkillProficiency,
-              unlock: Skills.intimidation,
-            },
-            "Powerful Presence",
-            "You gain proficiency in the Intimidate skill",
-            FeatureType.Unlock
-          ),
-        ]
+        [new FeatureProficiency(Skills.intimidation, "Powerful Presence")]
       ),
       new SubRace(
         { name: "Veena", descriptor: "Veena", plural: "Veena" },
         { movement: 35, maxAge: 240, size: Size.Medium },
-        [new Feature({ int: 1 }, "ASI", "ASI", FeatureType.ASI)],
-        [
-          new Feature(
-            {
-              type: UnlockType.SkillProficiency,
-              unlock: Skills.persuasion,
-            },
-            "Approachable",
-            "You gain proficiency in the Persuasion skill",
-            FeatureType.Unlock
-          ),
-        ]
+        [new ASIFeature(1, StatNames.int)],
+        [new FeatureProficiency(Skills.persuasion, "Approachable")]
       ),
     ]
   ),
@@ -214,15 +204,15 @@ export const Races: Race[] = [
   new Race(
     { name: "Genasi", descriptor: "Genasi", plural: "Genasi" },
     { movement: 30, maxAge: 120, size: Size.Medium },
-    [new Feature({ con: 2 }, "ASI", "ASI", FeatureType.ASI)],
+    [new ASIFeature(2, StatNames.con)],
     [],
     [Language.Common, Language.Primordial],
     [
       new SubRace(
         { name: "Genasi (Air)", descriptor: "Air Genasi", plural: "Genasi" },
         { movement: 30, maxAge: 120, size: Size.Medium },
-        [new Feature({ dex: 1 }, "ASI", "ASI", FeatureType.ASI)],
-        []
+        [new ASIFeature(1, StatNames.dex)],
+        [RaceFeatures.unendingBreath, RaceFeatures.mingleWithTheWind]
       ),
       new SubRace(
         {
@@ -231,13 +221,13 @@ export const Races: Race[] = [
           plural: "Genasai",
         },
         { movement: 30, maxAge: 120, size: Size.Medium },
-        [new Feature({ str: 1 }, "ASI", "ASI", FeatureType.ASI)],
-        []
+        [new ASIFeature(1, StatNames.str)],
+        [RaceFeatures.earthWalk, RaceFeatures.mergeWithStone]
       ),
       new SubRace(
         { name: "Genasi (Fire)", descriptor: "Fire Genasi", plural: "Genasi" },
         { movement: 30, maxAge: 120, size: Size.Medium },
-        [new Feature({ int: 1 }, "ASI", "ASI", FeatureType.ASI)],
+        [new ASIFeature(1, StatNames.int)],
         []
       ),
       new SubRace(
@@ -247,7 +237,7 @@ export const Races: Race[] = [
           plural: "Genasi",
         },
         { movement: 30, maxAge: 120, size: Size.Medium },
-        [new Feature({ wis: 1 }, "ASI", "ASI", FeatureType.ASI)],
+        [new ASIFeature(1, StatNames.wis)],
         []
       ),
     ]
@@ -257,7 +247,7 @@ export const Races: Race[] = [
   new Race(
     { name: "Aasimar", descriptor: "Aasimar", plural: "Aasimar" },
     { movement: 30, maxAge: 160, size: Size.Medium },
-    [new Feature({ cha: 2 }, "ASI", "ASI", FeatureType.ASI)],
+    [new ASIFeature(2, StatNames.cha)],
     [],
     [Language.Common, Language.Celestial],
     [
@@ -268,7 +258,7 @@ export const Races: Race[] = [
           plural: "Aasimar",
         },
         { movement: 30, maxAge: 160, size: Size.Medium },
-        [new Feature({ str: 1 }, "ASI", "ASI", FeatureType.ASI)],
+        [new ASIFeature(1, StatNames.str)],
         []
       ),
       new SubRace(
@@ -278,7 +268,7 @@ export const Races: Race[] = [
           plural: "Aasimar",
         },
         { movement: 30, maxAge: 160, size: Size.Medium },
-        [new Feature({ wis: 1 }, "ASI", "ASI", FeatureType.ASI)],
+        [new ASIFeature(1, StatNames.wis)],
         []
       ),
       new SubRace(
@@ -288,7 +278,7 @@ export const Races: Race[] = [
           plural: "Aasimar",
         },
         { movement: 30, maxAge: 160, size: Size.Medium },
-        [new Feature({ con: 1 }, "ASI", "ASI", FeatureType.ASI)],
+        [new ASIFeature(1, StatNames.con)],
         []
       ),
     ]
@@ -298,7 +288,7 @@ export const Races: Race[] = [
 export const Classes: Class[] = [
   new Class(
     "Fighter",
-    [],
+    // Class Features for later
     1,
     10,
     [StatNames.str, StatNames.con],
@@ -317,7 +307,7 @@ export const Classes: Class[] = [
   ),
   new Class(
     "Gunbreaker",
-    [],
+    // Class Features for later
     1,
     10,
     [StatNames.str, StatNames.dex],

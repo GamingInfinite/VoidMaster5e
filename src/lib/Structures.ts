@@ -1,5 +1,6 @@
 import { StatNames } from "./Enums";
 
+// Skills
 export class Skill {
   name: string;
   stat: StatNames;

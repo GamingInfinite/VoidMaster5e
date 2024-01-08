@@ -1,7 +1,13 @@
-import type { StatNames } from "./Enums";
-import type { Tag } from "./Items";
-import { Skill, Skills } from "./Structures";
+import { Rests, StatNames } from "./Enums";
+import type { ItemTag } from "./Items";
+import { Spells, Spell } from "./Spells";
+import { Skill } from "./Structures";
 
+/**
+ * Feature
+ *
+ * Replaces the FeatureType.Flavor from the previous system
+ */
 export class Feature {
   name: string;
   description: string;
@@ -12,6 +18,11 @@ export class Feature {
   }
 }
 
+/**
+ * ASIFeature
+ *
+ * Replaces the FeatureType.ASIFeature from the previous system
+ */
 export class ASIFeature extends Feature {
   stat: StatNames;
   value: number;
@@ -81,16 +92,103 @@ export class FeatureSet extends Feature {
 }
 
 export class FeatureProficiency extends Feature {
-    proficiency: Skill | Tag
+  proficiency: Skill | ItemTag;
   half: boolean;
 
   constructor(skill: Skill, name: string);
-  constructor(item: Tag, name: string);
-  constructor(proficiency: Skill | Tag, name: string, half: boolean = false) {
+  constructor(item: ItemTag, name: string);
+  constructor(
+    proficiency: Skill | ItemTag,
+    name: string,
+    half: boolean = false
+  ) {
     if (proficiency.constructor === Skill) {
-        super(name, `You gain proficiency in the ${proficiency.name}`);
+      super(name, `You gain proficiency in the ${proficiency.name}`);
+    } else {
+      super(name, `You have proficiency with ${proficiency.name}`);
     }
-    super(name, `You gain proficiency in the `);
-    this.half = half
+    this.half = half;
   }
 }
+
+export class PassiveFeature extends Feature {
+  constructor(name: string, description: string) {
+    super(name, description);
+  }
+}
+
+export class SpellFeature extends Feature {
+  spell: Spell;
+  charges: number;
+  chargeTime: Rests;
+  spellMod: StatNames;
+  constructor(
+    name: string,
+    spell: Spell,
+    charges: number,
+    chargeTime: Rests,
+    spellMod: StatNames
+  ) {
+    let chargestring = "";
+    switch (charges) {
+      case 1:
+        chargestring = "once";
+        break;
+      case 2:
+        chargestring = "twice";
+        break;
+      default:
+        chargestring = `${charges} times`;
+        break;
+    }
+    super(
+      name,
+      `You can cast the ${spell.name} spell ${chargestring} with this trait, requiring no material components, and you regain the ability to cast it this way when you finish a ${chargeTime}. ${spellMod} is your spellcasting ability for this spell.`
+    );
+    this.spell = spell;
+    this.charges = charges;
+    this.chargeTime = chargeTime;
+    this.spellMod = spellMod;
+  }
+}
+
+export const RaceFeatures = {
+  unendingBreath: new Feature(
+    "Unending Breath",
+    "You can hold your breath indefinitely while you're not incapacitated."
+  ),
+  mingleWithTheWind: new SpellFeature(
+    "Mingle with the Wind",
+    Spells.levitate,
+    1,
+    Rests.LongRest,
+    StatNames.con
+  ),
+  earthWalk: new Feature(
+    "Earth Walk",
+    "You can move across difficult terrain made of earth or stone without expending extra movement."
+  ),
+  mergeWithStone: new SpellFeature(
+    "Merge with Stone",
+    Spells.passWithoutTrace,
+    1,
+    Rests.LongRest,
+    StatNames.con
+  ),
+  lapineHop: new Feature(
+    "Lapine Hop",
+    "Your maximum high jump and long jump distances are 10ft. higher than how it would be normally calculated."
+  ),
+  lucky: new PassiveFeature(
+    "Lucky",
+    "When you roll a 1 on an attack roll, ability check, or saving throw, you can re-roll the die and must use the new roll."
+  ),
+  maskOfTheWild: new Feature(
+    "Mask of the Wild",
+    "You can attempt to hide even when you are only lightly obscured by foliage, heavy rain, falling snow, mist, and other natural phenomena."
+  ),
+  speakWithSmallBeasts: new Feature(
+    "Speak with Small Beasts",
+    "Through sounds and gestures, you can communicate simple ideas with Small or smaller beasts."
+  ),
+};
