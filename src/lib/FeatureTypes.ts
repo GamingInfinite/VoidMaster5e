@@ -76,18 +76,21 @@ export class FeatureSet extends Feature {
   features: Feature[];
   expandable: boolean;
   choice: boolean;
+  levels: number[];
 
   constructor(
     name: string,
     description: string,
     features: Feature[],
     expandable: boolean = true,
-    choice: boolean = false
+    choice: boolean = false,
+    levels: number[] = []
   ) {
     super(name, description);
     this.features = features;
     this.expandable = expandable;
     this.choice = choice;
+    this.levels = levels;
   }
 }
 
@@ -117,17 +120,36 @@ export class PassiveFeature extends Feature {
   }
 }
 
-export class SpellFeature extends Feature {
-  spell: Spell;
+export class ActionFeature extends Feature {
+  action;
   charges: number;
   chargeTime: Rests;
+
+  constructor(name: string, description: string, action, charges: number, chargeTime: Rests) {
+    super(name, description);
+    this.action = action;
+    this.charges = charges;
+    this.chargeTime = chargeTime;
+  }
+}
+
+export class SpellFeature extends ActionFeature {
   spellMod: StatNames;
+
+  constructor(name: string, spell: Spell, charges: number, spellMod: StatNames);
   constructor(
     name: string,
     spell: Spell,
     charges: number,
-    chargeTime: Rests,
-    spellMod: StatNames
+    spellMod: StatNames,
+    chargeTime: Rests
+  );
+  constructor(
+    name: string,
+    spell: Spell,
+    charges: number,
+    spellMod: StatNames,
+    chargeTime?: Rests
   ) {
     let chargestring = "";
     switch (charges) {
@@ -141,13 +163,23 @@ export class SpellFeature extends Feature {
         chargestring = `${charges} times`;
         break;
     }
-    super(
-      name,
-      `You can cast the ${spell.name} spell ${chargestring} with this trait, requiring no material components, and you regain the ability to cast it this way when you finish a ${chargeTime}. ${spellMod} is your spellcasting ability for this spell.`
-    );
-    this.spell = spell;
-    this.charges = charges;
-    this.chargeTime = chargeTime;
+    if (charges == 0) {
+      super(
+        name,
+        `You know the ${spell.name} cantrip. ${spellMod} is your spellcasting ability for these spells.`,
+        spell,
+        charges,
+        chargeTime
+      );
+    } else {
+      super(
+        name,
+        `You can cast the ${spell.name} spell ${chargestring} with this trait, requiring no material components, and you regain the ability to cast it this way when you finish a ${chargeTime}. ${spellMod} is your spellcasting ability for this spell.`,
+        spell,
+        charges,
+        chargeTime
+      );
+    }
     this.spellMod = spellMod;
   }
 }
@@ -161,8 +193,8 @@ export const RaceFeatures = {
     "Mingle with the Wind",
     Spells.levitate,
     1,
-    Rests.LongRest,
-    StatNames.con
+    StatNames.con,
+    Rests.LongRest
   ),
   earthWalk: new Feature(
     "Earth Walk",
@@ -172,9 +204,54 @@ export const RaceFeatures = {
     "Merge with Stone",
     Spells.passWithoutTrace,
     1,
-    Rests.LongRest,
-    StatNames.con
+    StatNames.con,
+    Rests.LongRest
   ),
+  fireResistance: new Feature(
+    "Fire Resistance",
+    "You have resistance to fire damage."
+  ),
+  reachToTheBlaze: new FeatureSet(
+    "Reach to the Blaze",
+    "You know the produce flame cantrip. Once you reach 3rd level, you can cast the burning hands spell once with this trait as a 1st-level spell, and you regain the ability to cast it this way when you finish a long rest. Constitution is your spellcasting ability for these spells.",
+    [
+      new SpellFeature("Produce Flame", Spells.produceFlame, 0, StatNames.con),
+      new SpellFeature(
+        "Burning Hands",
+        Spells.burningHands,
+        1,
+        StatNames.con,
+        Rests.LongRest
+      ),
+    ],
+    false,
+    false,
+    [1, 3]
+  ),
+  acidResistance: new Feature(
+    "Acid Resistance",
+    "You have resistance to acid damage."
+  ),
+  amphibious: new Feature("Amphibious", "You can breathe air and water."),
+  swim: new Feature("Swim", "You have a swimming speed of 30 feet."),
+  callToTheWave: new FeatureSet(
+    "Call to the Wave",
+    "You know the shape water cantrip. When you reach 3rd level, you can cast the create or destroy water spell as a 2nd-level spell once with this trait, and you regain the ability to cast it this way when you finish a long rest. Constitution is your spellcasting ability for these spells.",
+    [
+      new SpellFeature("Shape Water", Spells.shapeWater, 0, StatNames.con),
+      new SpellFeature(
+        "Create or Destroy Water",
+        Spells.createOrDestroyWater,
+        1,
+        StatNames.con,
+        Rests.LongRest
+      ),
+    ],
+    false,
+    false,
+    [1, 3]
+  ),
+  lightBearer: new SpellFeature("Light Bearer", Spells.light, 0, StatNames.cha),
   lapineHop: new Feature(
     "Lapine Hop",
     "Your maximum high jump and long jump distances are 10ft. higher than how it would be normally calculated."

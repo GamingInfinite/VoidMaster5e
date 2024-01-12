@@ -105,6 +105,7 @@
         <div class="flex flex-row justify-center">
           <button
             class="btn btn-ghost input-bordered min-w-24"
+            disabled={creationData.getTotalLevel() >= 20}
             on:click={() => {
               creationData.classes.push(undefined);
               creationData.classes = creationData.classes;
@@ -258,6 +259,7 @@
       </div>
       <!-- #region Race -->
       {#if creationData.race}
+        <div class="divider">{creationData.race.name}</div>
         <div class="flex flex-row gap-2">
           <p class="font-bold">Age.</p>
           <p>
@@ -323,6 +325,7 @@
       {#if creationData.classes}
         {#each creationData.classes as classt}
           {#if classt}
+          <div class="divider">{classt.name}</div>
             <!-- #region Item Proficiencies -->
             <!-- #region Armor Proficiencies -->
             <div class="flex flex-row gap-2">

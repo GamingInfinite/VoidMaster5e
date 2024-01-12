@@ -228,7 +228,7 @@ export const Races: Race[] = [
         { name: "Genasi (Fire)", descriptor: "Fire Genasi", plural: "Genasi" },
         { movement: 30, maxAge: 120, size: Size.Medium },
         [new ASIFeature(1, StatNames.int)],
-        []
+        [RaceFeatures.fireResistance, RaceFeatures.reachToTheBlaze]
       ),
       new SubRace(
         {
@@ -238,7 +238,12 @@ export const Races: Race[] = [
         },
         { movement: 30, maxAge: 120, size: Size.Medium },
         [new ASIFeature(1, StatNames.wis)],
-        []
+        [
+          RaceFeatures.acidResistance,
+          RaceFeatures.amphibious,
+          RaceFeatures.swim,
+          RaceFeatures.callToTheWave,
+        ]
       ),
     ]
   ),
